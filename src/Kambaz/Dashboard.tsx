@@ -27,7 +27,7 @@ export default function Dashboard() {
                     </Link>
                 </div>
 
-                {/* Course 3 */}
+
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1003/Home" className="wd-dashboard-course-link">
                         <img src="/images/mongo.png" width={200} alt="MongoDB logo" />
@@ -39,7 +39,7 @@ export default function Dashboard() {
                     </Link>
                 </div>
 
-                {/* Course 4 */}
+
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1004/Home" className="wd-dashboard-course-link">
                         <img src="/images/ts.webp" width={200} alt="TypeScript logo" />

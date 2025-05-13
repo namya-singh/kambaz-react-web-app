@@ -1,7 +1,17 @@
 export default function Modules() {
     return (
-        <div>
+        <div id="wd-modules-screen">
+
+            <div id="wd-modules-actions">
+                <button id="wd-collapse-all">Collapse All</button>
+                <button id="wd-view-progress">View Progress</button>
+                <button id="wd-publish-all">Publish All</button>
+                <button id="wd-add-module">+ Module</button>
+            </div>
+
+
             <ul id="wd-modules">
+
 
                 <li className="wd-module">
                     <div className="wd-title">Week 1</div>
@@ -61,7 +71,7 @@ export default function Modules() {
                     </ul>
                 </li>
 
-                {/* Week 3 */}
+
                 <li className="wd-module">
                     <div className="wd-title">Week 3</div>
                     <ul className="wd-lessons">
