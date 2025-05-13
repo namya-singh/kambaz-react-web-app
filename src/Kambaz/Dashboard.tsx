@@ -4,7 +4,7 @@ export default function Dashboard() {
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1><hr />
-            <h2 id="wd-dashboard-published">Published Courses (7)</h2><hr />
+            <h2 id="wd-dashboard-published">Published Courses (6)</h2><hr />
             <div id="wd-dashboard-courses">
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1001/Home" className="wd-dashboard-course-link">
@@ -30,7 +30,7 @@ export default function Dashboard() {
                 {/* Course 3 */}
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1003/Home" className="wd-dashboard-course-link">
-                        <img src="/images/mongodb.jpeg" width={200} alt="MongoDB logo" />
+                        <img src="/images/mongo.png" width={200} alt="MongoDB logo" />
                         <div>
                             <h5>CS1003 MongoDB</h5>
                             <p className="wd-dashboard-course-title">NoSQL Database Design</p>
@@ -42,7 +42,7 @@ export default function Dashboard() {
                 {/* Course 4 */}
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1004/Home" className="wd-dashboard-course-link">
-                        <img src="/images/typescript.jpeg" width={200} alt="TypeScript logo" />
+                        <img src="/images/ts.webp" width={200} alt="TypeScript logo" />
                         <div>
                             <h5>CS1004 TypeScript</h5>
                             <p className="wd-dashboard-course-title">Typed JavaScript</p>
@@ -53,7 +53,7 @@ export default function Dashboard() {
 
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1005/Home" className="wd-dashboard-course-link">
-                        <img src="/images/htmlcss.jpeg" width={200} alt="HTML & CSS icon" />
+                        <img src="/images/hc.png" width={200} alt="HTML & CSS icon" />
                         <div>
                             <h5>CS1005 HTML &amp; CSS</h5>
                             <p className="wd-dashboard-course-title">Web Fundamentals</p>
@@ -64,26 +64,15 @@ export default function Dashboard() {
 
                 <div className="wd-dashboard-course">
                     <Link to="/Kambaz/Courses/CS1006/Home" className="wd-dashboard-course-link">
-                        <img src="/images/python.jpeg" width={200} alt="Python logo" />
+                        <img src="/images/c.jpeg" width={200} alt="Cybersecurity logo" />
                         <div>
-                            <h5>CS1006 Python</h5>
-                            <p className="wd-dashboard-course-title">Data Science & Scripting</p>
+                            <h5>CS2300 Cybersecurity</h5>
+                            <p className="wd-dashboard-course-title">Cybersecurity</p>
                             <button>Go</button>
                         </div>
                     </Link>
                 </div>
 
-                {/* Course 7 */}
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1007/Home" className="wd-dashboard-course-link">
-                        <img src="/images/java.jpeg" width={200} alt="Java logo" />
-                        <div>
-                            <h5>CS1007 Java</h5>
-                            <p className="wd-dashboard-course-title">Enterprise Applications</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
 
             </div>
         </div>
