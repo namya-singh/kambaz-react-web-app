@@ -1,79 +1,99 @@
-import { Link } from "react-router-dom";
+import { Card }      from "react-bootstrap";
+import { Link }      from "react-router-dom";
 
-export default function Dashboard() {
+interface Course {
+    id:       string;
+    title:    string;
+    subtitle: string;
+    color:    "success" | "primary" | "info" | "warning" | "dark" | "danger";
+}
+
+const courses: Course[] = [
+    {
+        id: "CS1001",
+        title: "CS1001 React JS",
+        subtitle: "Full Stack Software Development",
+        color: "primary",
+    },
+    {
+        id: "CS1002",
+        title: "CS1002 Node.js",
+        subtitle: "Backend Development",
+        color: "success",
+    },
+    {
+        id: "CS1003",
+        title: "CS1003 MongoDB",
+        subtitle: "NoSQL Database Design",
+        color: "info",
+    },
+    {
+        id: "CS1004",
+        title: "CS1004 TypeScript",
+        subtitle: "Typed JavaScript",
+        color: "warning",
+    },
+    {
+        id: "CS1005",
+        title: "CS1005 HTML & CSS",
+        subtitle: "Web Fundamentals",
+        color: "danger",
+    },
+    {
+        id: "CS2300",
+        title: "CS2300 Cybersecurity",
+        subtitle: "Cybersecurity",
+        color: "dark",
+    },
+];
+
+
+export default function KambazDashboard() {
     return (
         <div id="wd-dashboard">
-            <h1 id="wd-dashboard-title">Dashboard</h1><hr />
-            <h2 id="wd-dashboard-published">Published Courses (6)</h2><hr />
-            <div id="wd-dashboard-courses">
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1001/Home" className="wd-dashboard-course-link">
-                        <img src="/images/react.png" width={200} alt="React JS logo" />
-                        <div>
-                            <h5>CS1001 React JS</h5>
-                            <p className="wd-dashboard-course-title">Full Stack Software Development</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1002/Home" className="wd-dashboard-course-link">
-                        <img src="/images/node.webp" width={200} alt="Node.js logo" />
-                        <div>
-                            <h5>CS1002 Node.js</h5>
-                            <p className="wd-dashboard-course-title">Backend Development</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
+            {/* 1) Title + hr */}
+            <h1 id="wd-dashboard-title">Dashboard</h1>
+            <hr />
 
+            {/* 2) Subtitle */}
+            <h2 id="wd-dashboard-published" className="h5 text-secondary">
+                Published Courses ({courses.length})
+            </h2>
 
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1003/Home" className="wd-dashboard-course-link">
-                        <img src="/images/mongo.png" width={200} alt="MongoDB logo" />
-                        <div>
-                            <h5>CS1003 MongoDB</h5>
-                            <p className="wd-dashboard-course-title">NoSQL Database Design</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
-
-
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1004/Home" className="wd-dashboard-course-link">
-                        <img src="/images/ts.webp" width={200} alt="TypeScript logo" />
-                        <div>
-                            <h5>CS1004 TypeScript</h5>
-                            <p className="wd-dashboard-course-title">Typed JavaScript</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
-
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1005/Home" className="wd-dashboard-course-link">
-                        <img src="/images/hc.png" width={200} alt="HTML & CSS icon" />
-                        <div>
-                            <h5>CS1005 HTML &amp; CSS</h5>
-                            <p className="wd-dashboard-course-title">Web Fundamentals</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
-
-                <div className="wd-dashboard-course">
-                    <Link to="/Kambaz/Courses/CS1006/Home" className="wd-dashboard-course-link">
-                        <img src="/images/c.jpeg" width={200} alt="Cybersecurity logo" />
-                        <div>
-                            <h5>CS2300 Cybersecurity</h5>
-                            <p className="wd-dashboard-course-title">Cybersecurity</p>
-                            <button>Go</button>
-                        </div>
-                    </Link>
-                </div>
-
-
+            {/* 3) wrapping grid with fixed‑width cards */}
+            <div
+                id="wd-dashboard-courses"
+                className="d-flex flex-wrap mt-4"
+                style={{
+                    columnGap: "30px",   /* 30px between cards horizontally */
+                    rowGap:    "40px",   /* 40px vertically */
+                }}
+            >
+                {courses.map(({ id, title, subtitle, color }) => (
+                    <div
+                        key={id}
+                        style={{
+                            flex:  "0 0 auto",
+                            width: "270px",   /* fixed card width */
+                        }}
+                    >
+                        <Card className="h-100">
+                            {/* colored header */}
+                            <div
+                                className={`bg-${color}`}
+                                style={{ height: "140px", borderTopLeftRadius: "0.25rem", borderTopRightRadius: "0.25rem" }}
+                            />
+                            <Card.Body>
+                                <Card.Title className="text-truncate">{title}</Card.Title>
+                                <Card.Text className="text-truncate text-muted" style={{ height: "3rem" }}>
+                                    {subtitle}
+                                </Card.Text>
+                                {/* makes the entire card clickable */}
+                                <Link to={`/Kambaz/Courses/${id}/Home`} className="stretched-link" />
+                            </Card.Body>
+                        </Card>
+                    </div>
+                ))}
             </div>
         </div>
     );

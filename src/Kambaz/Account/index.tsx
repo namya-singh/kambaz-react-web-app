@@ -1,8 +1,9 @@
+import { Routes, Route, Navigate } from "react-router-dom";
 import AccountNavigation from "./Navigation";
-import {Navigate, Route, Routes} from "react-router";
-import Signin from "./Signin.tsx";
-import Profile from "./Profile.tsx";
-import Signup from "./Signup.tsx";
+import Signin from "./Signin";
+import Profile from "./Profile";
+import Signup from './Signup';
+
 export default function Account() {
     return (
         <div id="wd-account-screen">
@@ -13,16 +14,13 @@ export default function Account() {
                     </td>
                     <td valign="top">
                         <Routes>
-                            <Route path="/"        element={<Navigate to="/Kambaz/Account/Signin" />} />
-                            <Route path="/Signin"  element={<Signin />} />
+                            <Route path="/" element={<Navigate to="/Kambaz/Account/Signin" />} />
+                            <Route path="/Signin" element={<Signin />} />
                             <Route path="/Profile" element={<Profile />} />
-                            <Route path="/Signup"  element={<Signup />} />
+                            <Route path="/Signup" element={<Signup />} />
                         </Routes>
                     </td>
                 </tr>
             </table>
         </div>
     );}
-
-
-

@@ -7,6 +7,8 @@ export default function Labs() {
     return (
         <div>
             <h1>Labs</h1>
+            <p id="wd-fullname">Namya Singh, NUID- 002033734</p>
+
             <TOC />
             <Routes>
                 <Route path="/" element={<Navigate to="Lab1" />} />
@@ -16,3 +18,4 @@ export default function Labs() {
             </Routes>
         </div>
     );}
+
