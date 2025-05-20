@@ -1,19 +1,20 @@
 
 import { ListGroup } from "react-bootstrap";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { FaFlask, FaInbox, FaRegCircleUser } from "react-icons/fa6";
-import { IoCalendarOutline } from "react-icons/io5";
-import { LiaBookSolid } from "react-icons/lia";
 import { NavLink } from "react-router-dom";
+import {TfiDashboard} from "react-icons/tfi";
+import {RiAccountCircle2Line} from "react-icons/ri";
+import {FaBook, FaRegCalendarAlt} from "react-icons/fa";
+import {HiInbox} from "react-icons/hi";
+import {SlChemistry} from "react-icons/sl";
 
 export default function KambazNavigation() {
     const links = [
-        { to: "/Kambaz",          Icon: FaRegCircleUser,    label: "Account",   end: true  },
-        { to: "/Kambaz/Dashboard", Icon: AiOutlineDashboard, label: "Dashboard"            },
-        { to: "/Kambaz/Courses",   Icon: LiaBookSolid,       label: "Courses"              },
-        { to: "/Kambaz/Calendar",  Icon: IoCalendarOutline,  label: "Calendar"             },
-        { to: "/Kambaz/Inbox",     Icon: FaInbox,            label: "Inbox"                },
-        { to: "/Labs",             Icon: FaFlask,            label: "Labs"                 },
+        { to: "/Kambaz",          Icon: RiAccountCircle2Line,    label: "Account",   end: true  },
+        { to: "/Kambaz/Dashboard", Icon: TfiDashboard, label: "Dashboard"            },
+        { to: "/Kambaz/Courses",   Icon: FaBook,       label: "Courses"              },
+        { to: "/Kambaz/Calendar",  Icon: FaRegCalendarAlt,  label: "Calendar"             },
+        { to: "/Kambaz/Inbox",     Icon: HiInbox,            label: "Inbox"                },
+        { to: "/Labs",             Icon: SlChemistry,            label: "Labs"                 },
     ];
 
     return (
@@ -22,7 +23,7 @@ export default function KambazNavigation() {
             style={{ width: "110px" }}
             className="position-fixed top-0 bottom-0 d-none d-md-block bg-black z-2 rounded-0"
         >
-            {/* NEU logo */}
+
             <ListGroup.Item
                 as="a"
                 href="https://www.northeastern.edu/"

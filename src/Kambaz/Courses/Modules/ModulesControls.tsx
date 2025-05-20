@@ -9,19 +9,19 @@ export default function ModulesControls() {
             id="wd-modules-controls"
             className="d-flex flex-wrap gap-3 justify-content-start align-items-center mb-3"
         >
-            {/* Collapse All */}
+
             <Button variant="secondary" size="lg" id="wd-collapse-all">
                 <FaCompressAlt className="me-2" />
                 Collapse All
             </Button>
 
-            {/* View Progress */}
+
             <Button variant="secondary" size="lg" id="wd-view-progress">
                 <FaEye className="me-2" />
                 View Progress
             </Button>
 
-            {/* Publish All Dropdown */}
+
             <Dropdown>
                 <Dropdown.Toggle variant="secondary" size="lg" id="wd-publish-all-btn">
                     <GreenCheckmark /> Publish All
@@ -47,7 +47,7 @@ export default function ModulesControls() {
                 </Dropdown.Menu>
             </Dropdown>
 
-            {/* Add Module */}
+
             <Button variant="danger" size="lg" id="wd-add-module-btn">
                 <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
                 Module
