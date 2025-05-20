@@ -5,7 +5,7 @@ import {TfiDashboard} from "react-icons/tfi";
 import {RiAccountCircle2Line} from "react-icons/ri";
 import {FaBook, FaRegCalendarAlt} from "react-icons/fa";
 import {HiInbox} from "react-icons/hi";
-import {SlChemistry} from "react-icons/sl";
+import {HiMiniComputerDesktop} from "react-icons/hi2";
 
 export default function KambazNavigation() {
     const links = [
@@ -14,7 +14,7 @@ export default function KambazNavigation() {
         { to: "/Kambaz/Courses",   Icon: FaBook,       label: "Courses"              },
         { to: "/Kambaz/Calendar",  Icon: FaRegCalendarAlt,  label: "Calendar"             },
         { to: "/Kambaz/Inbox",     Icon: HiInbox,            label: "Inbox"                },
-        { to: "/Labs",             Icon: SlChemistry,            label: "Labs"                 },
+        { to: "/Labs",             Icon: HiMiniComputerDesktop,            label: "Labs"                 },
     ];
 
     return (

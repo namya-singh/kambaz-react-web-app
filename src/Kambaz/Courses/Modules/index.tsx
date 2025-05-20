@@ -41,7 +41,7 @@ export default function Modules() {
                         </ListGroup>
                     </ListGroup.Item>
 
-                    {/* Week 2 */}
+
                     <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
                         <div className="wd-title p-3 ps-2 bg-secondary">
                             <BsGripVertical className="me-2 fs-3" />
@@ -66,7 +66,7 @@ export default function Modules() {
                         </ListGroup>
                     </ListGroup.Item>
 
-                    {/* Week 3 */}
+
                     <ListGroup.Item className="wd-module p-0 mb-5 fs-5 border-gray">
                         <div className="wd-title p-3 ps-2 bg-secondary">
                             <BsGripVertical className="me-2 fs-3" />
@@ -96,7 +96,7 @@ export default function Modules() {
                 </ListGroup>
             </div>
 
-            {/* Course Status on large screens */}
+
             <div className="d-none d-xl-block ms-4" style={{ width: 350 }}>
                 <CourseStatus />
             </div>

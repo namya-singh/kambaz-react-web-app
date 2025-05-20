@@ -80,68 +80,68 @@ export default function Lab1() {
                             <td>A1</td>
                             <td>MongoDB Basics</td>
                             <td>1/15/25</td>
-                            <td>85</td>
+                            <td>95</td>
                         </tr>
                         <tr>
                             <td>A2</td>
                             <td>MongoDB Aggregation</td>
                             <td>1/22/25</td>
-                            <td>88</td>
+                            <td>100</td>
                         </tr>
                         <tr>
                             <td>A3</td>
                             <td>Express.js Intro</td>
                             <td>1/29/25</td>
-                            <td>82</td>
+                            <td>100</td>
                         </tr>
                         <tr>
                             <td>A4</td>
                             <td>Express Middleware</td>
                             <td>2/5/25</td>
-                            <td>91</td>
+                            <td>99</td>
                         </tr>
                         <tr>
                             <td>A5</td>
                             <td>React Components</td>
                             <td>2/12/25</td>
-                            <td>87</td>
+                            <td>97</td>
                         </tr>
                         <tr>
                             <td>A6</td>
                             <td>React State & Props</td>
                             <td>2/19/25</td>
-                            <td>90</td>
+                            <td>98</td>
                         </tr>
                         <tr>
                             <td>A7</td>
                             <td>React Hooks</td>
                             <td>2/26/25</td>
-                            <td>92</td>
+                            <td>99</td>
                         </tr>
                         <tr>
                             <td>A8</td>
                             <td>Node.js Fundamentals</td>
                             <td>3/5/25</td>
-                            <td>89</td>
+                            <td>100</td>
                         </tr>
                         <tr>
                             <td>A9</td>
                             <td>Node.js with Express</td>
                             <td>3/12/25</td>
-                            <td>93</td>
+                            <td>99</td>
                         </tr>
                         <tr>
                             <td>A10</td>
                             <td>MERN Fullstack Project</td>
                             <td>3/19/25</td>
-                            <td>96</td>
+                            <td>99</td>
                         </tr>
 
                         </tbody>
                         <tfoot>
                         <tr>
                             <td colSpan={3}>Average</td>
-                            <td>89.3</td>
+                            <td>98.6</td>
                         </tr>
                         </tfoot>
                     </table>

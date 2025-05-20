@@ -13,7 +13,7 @@ export default function AssignmentEditor() {
             {/* Assignment Name */}
             <Form.Group controlId="assignmentName" className="mb-4">
                 <Form.Label>Assignment Name</Form.Label>
-                <Form.Control type="text" placeholder="Search Assignment Name" />
+                <Form.Control type="text" placeholder="A1 - Kanbaz Structure" />
             </Form.Group>
 
             {/* ─── Description (restored!) ───────────────────────── */}
