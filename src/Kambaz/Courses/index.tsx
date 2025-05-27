@@ -24,7 +24,6 @@ export default function Courses() {
 
 
             </h2>
-            <h2>Course 1234</h2>
             <hr />
             <div className="d-flex">
                 <div className="d-none d-md-block bg-white border-end pe-4">
