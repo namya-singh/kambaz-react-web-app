@@ -1,99 +1,55 @@
-import { Card }      from "react-bootstrap";
+import {Button, Card, Col, Row }      from "react-bootstrap";
 import { Link }      from "react-router-dom";
+import * as db from "./Database";
 
-interface Course {
-    id:       string;
-    title:    string;
-    subtitle: string;
-    color:    "success" | "primary" | "info" | "warning" | "dark" | "danger";
-}
-
-const courses: Course[] = [
-    {
-        id: "CS1001",
-        title: "CS1001 React JS",
-        subtitle: "Full Stack Software Development",
-        color: "primary",
-    },
-    {
-        id: "CS1002",
-        title: "CS1002 Node.js",
-        subtitle: "Backend Development",
-        color: "success",
-    },
-    {
-        id: "CS1003",
-        title: "CS1003 MongoDB",
-        subtitle: "NoSQL Database Design",
-        color: "info",
-    },
-    {
-        id: "CS1004",
-        title: "CS1004 TypeScript",
-        subtitle: "Typed JavaScript",
-        color: "warning",
-    },
-    {
-        id: "CS1005",
-        title: "CS1005 HTML & CSS",
-        subtitle: "Web Fundamentals",
-        color: "danger",
-    },
-    {
-        id: "CS2300",
-        title: "CS2300 Cybersecurity",
-        subtitle: "Cybersecurity",
-        color: "dark",
-    },
-];
+export default function Dashboard() {
+    const courses = db.courses;
 
 
-export default function KambazDashboard() {
     return (
-        <div id="wd-dashboard">
-            {/* 1) Title + hr */}
+        <div id="wd-dashboard" className="p-3">
             <h1 id="wd-dashboard-title">Dashboard</h1>
             <hr />
 
-            {/* 2) Subtitle */}
-            <h2 id="wd-dashboard-published" className="h5 text-secondary">
+            <h2 id="wd-dashboard-published">
                 Published Courses ({courses.length})
             </h2>
+            <hr />
 
-            {/* 3) wrapping grid with fixed‑width cards */}
-            <div
-                id="wd-dashboard-courses"
-                className="d-flex flex-wrap mt-4"
-                style={{
-                    columnGap: "30px",   /* 30px between cards horizontally */
-                    rowGap:    "40px",   /* 40px vertically */
-                }}
-            >
-                {courses.map(({ id, title, subtitle, color }) => (
-                    <div
-                        key={id}
-                        style={{
-                            flex:  "0 0 auto",
-                            width: "270px",   /* fixed card width */
-                        }}
-                    >
-                        <Card className="h-100">
-                            {/* colored header */}
-                            <div
-                                className={`bg-${color}`}
-                                style={{ height: "140px", borderTopLeftRadius: "0.25rem", borderTopRightRadius: "0.25rem" }}
-                            />
-                            <Card.Body>
-                                <Card.Title className="text-truncate">{title}</Card.Title>
-                                <Card.Text className="text-truncate text-muted" style={{ height: "3rem" }}>
-                                    {subtitle}
-                                </Card.Text>
-                                {/* makes the entire card clickable */}
-                                <Link to={`/Kambaz/Courses/${id}/Home`} className="stretched-link" />
-                            </Card.Body>
-                        </Card>
-                    </div>
-                ))}
+            <div id="wd-dashboard-courses">
+                <Row xs={1} md={3} lg={5} className="g-4">
+                    {courses.map((course) => (
+                        <Col key={course._id} className="wd-dashboard-course d-flex justify-content-center">
+                            <Card style={{ width: 300 }}>
+                                <Link
+                                    to={`/Kambaz/Courses/${course._id}/Home`}
+                                    className="text-decoration-none text-dark"
+                                >
+                                    <Card.Img
+                                        src={course.image}
+                                        variant="top"
+                                        width="100%"
+                                        height={160}
+                                    />
+                                    <Card.Body className="d-flex flex-column">
+                                        <Card.Title className="wd-dashboard-course-title text-nowrap overflow-hidden">
+                                            {course.name}
+                                        </Card.Title>
+                                        <Card.Text
+                                            className="wd-dashboard-course-description flex-grow-1 overflow-hidden"
+                                            style={{ height: 80 }}
+                                        >
+                                            {course.description}
+                                        </Card.Text>
+                                        <Button variant="primary" className="mt-2 align-self-start">
+                                            Go
+                                        </Button>
+                                    </Card.Body>
+                                </Link>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
             </div>
         </div>
     );

@@ -27,6 +27,11 @@ export default function Signup() {
                                 <Form.Control type="password" placeholder="Namya123" />
                             </Form.Group>
 
+                            <Form.Group controlId="wd-signup-vpassword" className="mb-4">
+                                <Form.Label>Verify Password</Form.Label>
+                                <Form.Control type="password" placeholder="Namya123" />
+                            </Form.Group>
+
                             <Button
                                 id="wd-signup-btn"
                                 variant="primary"
