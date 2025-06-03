@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { ListGroup } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import { FaRegCircleUser } from "react-icons/fa6";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { LiaBookSolid } from "react-icons/lia";
-import { IoCalendarOutline } from "react-icons/io5";
-import { FaInbox, FaFlask } from "react-icons/fa6";
+import { TfiDashboard } from "react-icons/tfi";
+import { RiAccountCircle2Line } from "react-icons/ri";
+import { FaBook, FaRegCalendarAlt } from "react-icons/fa";
+import { HiInbox } from "react-icons/hi";
+import { HiMiniComputerDesktop } from "react-icons/hi2";
 
 export default function KambazNavigation() {
     const { pathname } = useLocation();
@@ -15,40 +15,41 @@ export default function KambazNavigation() {
         {
             to: "/Kambaz/Account",
             label: "Account",
-            Icon: FaRegCircleUser,
+            Icon: RiAccountCircle2Line,
             match: (p: string) => p.startsWith("/Kambaz/Account"),
         },
         {
             to: "/Kambaz/Dashboard",
             label: "Dashboard",
-            Icon: AiOutlineDashboard,
+            Icon: TfiDashboard,
             match: (p: string) => p === "/Kambaz/Dashboard",
         },
         {
-            to: "/Kambaz/Dashboard", // click → Dashboard
+            to: "/Kambaz/Dashboard",  // still navigates to dashboard
             label: "Courses",
-            Icon: LiaBookSolid,
-            match: (p: string) => p.startsWith("/Kambaz/Courses"),
+            Icon: FaBook,
+            match: (p: string) => p.startsWith("/Kambaz/Courses"),  // only active on /Kambaz/Courses paths
         },
         {
             to: "/Kambaz/Calendar",
             label: "Calendar",
-            Icon: IoCalendarOutline,
+            Icon: FaRegCalendarAlt,
             match: (p: string) => p === "/Kambaz/Calendar",
         },
         {
             to: "/Kambaz/Inbox",
             label: "Inbox",
-            Icon: FaInbox,
+            Icon: HiInbox,
             match: (p: string) => p === "/Kambaz/Inbox",
         },
         {
             to: "/Labs",
             label: "Labs",
-            Icon: FaFlask,
+            Icon: HiMiniComputerDesktop,
             match: (p: string) => p === "/Labs",
         },
     ];
+
 
     useEffect(() => {
         if (accountFlash) {
@@ -60,14 +61,14 @@ export default function KambazNavigation() {
     return (
         <>
             <style>{`
-        @keyframes flash-bg {
-          0%, 100% { background-color: black; }
-          50% { background-color: yellow; }
-        }
-        .flash-account {
-          animation: flash-bg 1.5s ease-in-out;
-        }
-      `}</style>
+                @keyframes flash-bg {
+                  0%, 100% { background-color: black; }
+                  50% { background-color: yellow; }
+                }
+                .flash-account {
+                  animation: flash-bg 1.5s ease-in-out;
+                }
+            `}</style>
 
             <ListGroup
                 id="wd-kambaz-navigation"

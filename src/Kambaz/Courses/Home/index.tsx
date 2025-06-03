@@ -2,7 +2,6 @@
 import CourseStatus from "./Status";
 import Modules from "../Modules";
 
-
 export default function Home() {
     return (
         <div className="d-flex">

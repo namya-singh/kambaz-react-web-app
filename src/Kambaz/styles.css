@@ -1,4 +1,3 @@
-/* Reset & Base Font */
 body {
   margin: 0;
   padding: 0;
@@ -7,14 +6,30 @@ body * {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Push main content over when Kambaz nav is visible */
+@media (min-width: 768px) {
+  #wd-kambaz .wd-main-content-offset {
+    padding-left: 140px !important;
+  }
+}
+.list-group.wd > .list-group-item.active {
+  color: black;
+  background-color: white;
+  border-left: 3px solid black !important;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+body * {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 @media (min-width: 768px) {
   #wd-kambaz .wd-main-content-offset {
     padding-left: 140px !important;
   }
 }
 
-/* Override Bootstrap secondary buttons */
 .btn-secondary {
   --bs-btn-color: #000 !important;
   --bs-btn-bg: #c7cdd1 !important;
@@ -25,24 +40,23 @@ body * {
   --bs-secondary-rgb: 199, 205, 209;
 }
 
-/* Make all list-group item borders gray */
 .list-group-item {
   --bs-list-group-border-color: gray;
 }
 
-/* Custom border helper for module container */
 .border-gray {
   border: 1px solid gray !important;
 }
 
-/* Green stripe on each lesson */
 .wd-lesson {
   border-left: 3px solid green !important;
 }
-
-/* Active list-group item customization */
-.list-group.wd > .list-group-item.active {
-  color: black;
-  background-color: white;
-  border-left: 3px solid black !important;
+#wd-course-nav {
+  background-color: #fff !important;
+}
+#wd-course-nav .nav-link {
+  color: #dc3545;
+}
+#wd-publish-all-btn.no-caret::after {
+  display: none !important;
 }

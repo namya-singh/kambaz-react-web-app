@@ -19,17 +19,16 @@ export default function Signup() {
                         <Form onSubmit={handleSignup}>
                             <Form.Group controlId="wd-signup-username" className="mb-3">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control placeholder="Namya" />
+                                <Form.Control placeholder="namya" />
                             </Form.Group>
 
                             <Form.Group controlId="wd-signup-password" className="mb-4">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Namya123" />
+                                <Form.Control type="password" placeholder="namya123" />
                             </Form.Group>
-
                             <Form.Group controlId="wd-signup-vpassword" className="mb-4">
-                                <Form.Label>Verify Password</Form.Label>
-                                <Form.Control type="password" placeholder="Namya123" />
+                                <Form.Label> Verify Password</Form.Label>
+                                <Form.Control type="vpassword" placeholder="namya123" />
                             </Form.Group>
 
                             <Button
