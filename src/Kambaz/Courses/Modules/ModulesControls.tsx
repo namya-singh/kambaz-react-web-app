@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { FaPlus, FaEye, FaCompressAlt } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
@@ -9,12 +9,14 @@ type ModulesControlsProps = {
     moduleName: string;
     setModuleName: (title: string) => void;
     addModule: () => void;
+    isFaculty: boolean;
 };
 
 export default function ModulesControls({
                                             moduleName,
                                             setModuleName,
                                             addModule,
+                                            isFaculty,
                                         }: ModulesControlsProps) {
     const [show, setShow] = useState(false);
 
@@ -61,21 +63,29 @@ export default function ModulesControls({
                 </Dropdown.Menu>
             </Dropdown>
 
-            {/* The "Add Module" button now opens the ModuleEditor modal */}
-            <Button variant="danger" size="lg" onClick={handleShow} id="wd-add-module-btn">
-                <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
-                Module
-            </Button>
+            {/* Show +Module button ONLY if faculty */}
+            {isFaculty && (
+                <>
+                    <Button
+                        variant="danger"
+                        size="lg"
+                        onClick={handleShow}
+                        id="wd-add-module-btn"
+                    >
+                        <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+                        Module
+                    </Button>
 
-            {/* ModuleEditor modal dialog */}
-            <ModuleEditor
-                show={show}
-                handleClose={handleClose}
-                dialogTitle="Add Module"
-                moduleName={moduleName}
-                setModuleName={setModuleName}
-                addModule={addModule}
-            />
+                    <ModuleEditor
+                        show={show}
+                        handleClose={handleClose}
+                        dialogTitle="Add Module"
+                        moduleName={moduleName}
+                        setModuleName={setModuleName}
+                        addModule={addModule}
+                    />
+                </>
+            )}
         </div>
     );
 }

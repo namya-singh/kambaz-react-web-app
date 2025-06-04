@@ -5,6 +5,7 @@ import accountReducer from "./Account/reducer";
 import assignmentsReducer from "./Courses/Assignments/reducer";
 import enrollmentReducer from "./enrollmentReducer";
 
+
 const store = configureStore({
     reducer: {
         accountReducer,
@@ -12,6 +13,7 @@ const store = configureStore({
         modulesReducer,
         assignmentsReducer,
         enrollmentReducer,
+
     },
 });
 

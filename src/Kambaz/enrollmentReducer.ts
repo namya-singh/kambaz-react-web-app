@@ -38,14 +38,16 @@ const UNENROLL_COURSE = "enrollment/UNENROLL_COURSE";
 const TOGGLE_SHOW_ALL_COURSES = "enrollment/TOGGLE_SHOW_ALL_COURSES";
 
 // Action creators
-export const enrollCourse = (user: string, course: string) => ({
+export const enrollCourse = (payload: { user: string; course: string }) => ({
   type: ENROLL_COURSE,
-  payload: { user, course },
+  payload,
 });
-export const unenrollCourse = (user: string, course: string) => ({
+
+export const unenrollCourse = (payload: { user: string; course: string }) => ({
   type: UNENROLL_COURSE,
-  payload: { user, course },
+  payload,
 });
+
 export const toggleShowAllCourses = () => ({
   type: TOGGLE_SHOW_ALL_COURSES,
 });

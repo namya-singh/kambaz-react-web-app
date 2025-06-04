@@ -36,7 +36,10 @@ const Dashboard: React.FC = () => {
 
     const dispatch = useDispatch();
 
+    // Load all courses from JSON
     const [courses, setCourses] = useState<Course[]>(db.courses);
+
+    // Local state for “editing/adding” (faculty only)
     const [course, setCourse] = useState<Course>({
         _id: "",
         name: "",
@@ -52,6 +55,7 @@ const Dashboard: React.FC = () => {
 
     const isFaculty = currentUser.role === "FACULTY";
 
+    // ─────────────── Faculty: Add / Update / Delete ───────────────
     const addNewCourse = () => {
         if (!course.name.trim()) return;
         const newCourse: Course = {
@@ -59,47 +63,43 @@ const Dashboard: React.FC = () => {
             _id: String(Date.now()),
             image: course.image || "/images/react.jpg",
         };
-        setCourses([...courses, newCourse]);
-        setCourse({
-            _id: "",
-            name: "",
-            description: "",
-            image: "/images/react.jpg",
-        });
+        setCourses((prev) => [...prev, newCourse]);
+        setCourse({ _id: "", name: "", description: "", image: "/images/react.jpg" });
     };
 
     const updateCourse = () => {
-        setCourses(courses.map((c) => (c._id === course._id ? course : c)));
-        setCourse({
-            _id: "",
-            name: "",
-            description: "",
-            image: "/images/react.jpg",
-        });
+        if (!course._id) return;
+        setCourses((prev) => prev.map((c) => (c._id === course._id ? course : c)));
+        setCourse({ _id: "", name: "", description: "", image: "/images/react.jpg" });
     };
 
     const deleteCourse = (courseId: string) => {
-        setCourses(courses.filter((c) => c._id !== courseId));
+        setCourses((prev) => prev.filter((c) => c._id !== courseId));
     };
 
+    // ─────────────── Student: Enroll / Unenroll ───────────────
+    // Build a Set of course‐IDs that this user is enrolled in:
     const myEnrolledCourseIds = new Set(
         enrollments
             .filter((en: Enrollment) => en.user === currentUser._id)
             .map((en) => en.course)
     );
 
+    // Filter “all courses” down to only those the student is enrolled in:
     const myEnrolledCourses = courses.filter((c) =>
         myEnrolledCourseIds.has(c._id)
     );
 
+    // Depending on “showAll,” decide which array to render:
     const displayedCourses = showAll ? courses : myEnrolledCourses;
 
+    // Dispatch actions with a single payload object { user, course }:
     const handleEnroll = (courseId: string) => {
-        dispatch(enrollCourse(currentUser._id, courseId));
+        dispatch(enrollCourse({ user: currentUser._id, course: courseId }));
     };
 
     const handleUnenroll = (courseId: string) => {
-        dispatch(unenrollCourse(currentUser._id, courseId));
+        dispatch(unenrollCourse({ user: currentUser._id, course: courseId }));
     };
 
     return (
@@ -220,6 +220,8 @@ const Dashboard: React.FC = () => {
 
                                         <ButtonGroup className="mt-auto w-100">
                                             {isEnrolled ? (
+                                                // ─────────────── FIXED “Go” Link ───────────────
+                                                // Point to “/Kambaz/Courses/:cid/Home” so that your nested <Route> can match:
                                                 <Link
                                                     to={`/Kambaz/Courses/${c._id}/Home`}
                                                     className="text-decoration-none text-dark btn btn-primary"

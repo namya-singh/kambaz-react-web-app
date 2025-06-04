@@ -18,29 +18,31 @@ export default function Modules() {
     const { cid } = useParams<{ cid: string }>();
     const [moduleName, setModuleName] = useState("");
     const dispatch = useDispatch();
+
+    // Get modules and user info from Redux
     const { modules } = useSelector((state: any) => state.modulesReducer);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-    // Role check
     const isFaculty = currentUser?.role === "FACULTY";
 
+    // Filter modules for this course
     const courseModules = modules.filter((m: any) => m.course === cid);
 
     return (
         <div className="wd-modules d-flex">
             <div className="flex-fill pe-4">
-                {/* Show Add Module form only if FACULTY */}
-                {isFaculty && (
-                    <ModulesControls
-                        moduleName={moduleName}
-                        setModuleName={setModuleName}
-                        addModule={() => {
-                            if (moduleName.trim() === "") return;
-                            dispatch(addModule({ name: moduleName.trim(), course: cid }));
-                            setModuleName("");
-                        }}
-                    />
-                )}
+                {/* Pass isFaculty to show/hide +Module button */}
+                <ModulesControls
+                    moduleName={moduleName}
+                    setModuleName={setModuleName}
+                    addModule={() => {
+                        if (moduleName.trim() === "") return;
+                        dispatch(addModule({ name: moduleName.trim(), course: cid }));
+                        setModuleName("");
+                    }}
+                    isFaculty={isFaculty}
+                />
+
                 <hr />
 
                 <ListGroup id="wd-modules" className="rounded-0">
@@ -66,15 +68,16 @@ export default function Modules() {
                                         }}
                                     />
                                 )}
-                                {/* Show edit/delete buttons only if FACULTY */}
+
+                                {/* Edit/delete buttons only for faculty */}
                                 {isFaculty && (
                                     <span className="ms-auto">
-                    <ModuleControlButtons
-                        moduleId={mod._id}
-                        deleteModule={(moduleId) => dispatch(deleteModule(moduleId))}
-                        editModule={(moduleId) => dispatch(editModule(moduleId))}
-                    />
-                  </span>
+                                        <ModuleControlButtons
+                                            moduleId={mod._id}
+                                            deleteModule={(moduleId) => dispatch(deleteModule(moduleId))}
+                                            editModule={(moduleId) => dispatch(editModule(moduleId))}
+                                        />
+                                    </span>
                                 )}
                             </div>
 
@@ -87,11 +90,12 @@ export default function Modules() {
                                         >
                                             <BsGripVertical className="me-2 fs-3" />
                                             {lesson.name}
-                                            {/* Hide lesson control buttons if not FACULTY */}
+
+                                            {/* Lesson controls only for faculty */}
                                             {isFaculty && (
                                                 <span className="ms-auto">
-                          <LessonControlButtons />
-                        </span>
+                                                    <LessonControlButtons />
+                                                </span>
                                             )}
                                         </ListGroup.Item>
                                     ))}

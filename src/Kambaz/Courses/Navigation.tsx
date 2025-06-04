@@ -1,72 +1,19 @@
-// import { ListGroup } from "react-bootstrap";
-// import { NavLink, useParams, useLocation } from "react-router-dom";
-//
-// export default function CourseNavigation() {
-//     const { courseId = "1234" } = useParams<{ courseId: string }>();
-//     const location = useLocation();
-//
-//     const items = [
-//         { to: `/Kambaz/Courses/${courseId}/Home`,        label: "Home",        id: "wd-course-home-link",        end: true },
-//         { to: `/Kambaz/Courses/${courseId}/Modules`,     label: "Modules",     id: "wd-course-modules-link" },
-//         { to: `/Kambaz/Courses/${courseId}/Piazza`,      label: "Piazza",      id: "wd-course-piazza-link" },
-//         { to: `/Kambaz/Courses/${courseId}/Zoom`,        label: "Zoom Meetings",id: "wd-course-zoom-link" },
-//         { to: `/Kambaz/Courses/${courseId}/Assignments`, label: "Assignments", id: "wd-course-assignments-link" },
-//         { to: `/Kambaz/Courses/${courseId}/Quizzes`,     label: "Quizzes",     id: "wd-course-quizzes-link" },
-//         { to: `/Kambaz/Courses/${courseId}/Grades`,      label: "Grades",      id: "wd-course-grades-link" },
-//         { to: `/Kambaz/Courses/${courseId}/People`,      label: "People",      id: "wd-course-people-link" },
-//     ];
-//
-//     // Check if the current path matches any item explicitly
-//     const isAnyActive = items.some(item => location.pathname === item.to);
-//
-//     return (
-//         <ListGroup
-//             id="wd-courses-navigation"
-//             className="wd fs-5 rounded-0 bg-white"
-//         >
-//             {items.map(({ to, label, id, end }) => (
-//                 <NavLink key={id} to={to} end={end} style={{ textDecoration: "none" }}>
-//                     {({ isActive }) => {
-//                         const isHomeForcedActive = label === "Home" && !isAnyActive;
-//                         const active = isActive || isHomeForcedActive;
-//
-//                         return (
-//                             <ListGroup.Item
-//                                 id={id}
-//                                 className={[
-//                                     "list-group-item",
-//                                     "list-group-item-action",
-//                                     "w-100",
-//                                     "py-3",
-//                                     "border-0",
-//                                     "bg-white",
-//                                     active
-//                                         ? "text-dark border-start border-3 border-dark"
-//                                         : "text-danger"
-//                                 ].join(" ")}
-//                             >
-//                                 {label}
-//                             </ListGroup.Item>
-//                         );
-//                     }}
-//                 </NavLink>
-//             ))}
-//         </ListGroup>
-//     );
-// }
-
-
-
-
-
 import { ListGroup } from "react-bootstrap";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-export default function CourseNavigation() {
-    // grab the same “cid” param you defined in your Routes
-    const { cid } = useParams<{ cid: string }>();
+interface Course {
+    _id: string;
+    name: string;
+    // add other course properties if needed
+}
 
-    // just an array of labels—no hardcoding of JSX
+interface CourseNavigationProps {
+    course: Course;
+}
+
+export default function CourseNavigation({ course }: CourseNavigationProps) {
+    const cid = course._id;
+
     const links = [
         "Home",
         "Modules",
@@ -79,14 +26,9 @@ export default function CourseNavigation() {
     ];
 
     return (
-        <ListGroup
-            id="wd-courses-navigation"
-            className="wd fs-5 rounded-0 bg-white"
-        >
+        <ListGroup id="wd-courses-navigation" className="wd fs-5 rounded-0 bg-white">
             {links.map((label) => {
-                // build each URL from the current course ID + label
                 const to = `/Kambaz/Courses/${cid}/${label}`;
-                // only “Home” should use exact matching
                 const end = label === "Home";
 
                 return (
@@ -106,7 +48,6 @@ export default function CourseNavigation() {
                                     "py-3",
                                     "border-0",
                                     "bg-white",
-                                    // exactly your original styling:
                                     isActive
                                         ? "text-dark border-start border-3 border-dark"
                                         : "text-danger",

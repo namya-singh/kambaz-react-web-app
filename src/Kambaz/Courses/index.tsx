@@ -1,7 +1,7 @@
-import { useParams, useLocation, Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store";
-import type { Course } from "./reducer";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { useParams, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import * as db from "../Database"; // Adjust the relative path if needed
 
 import CourseNavigation from "./Navigation";
 import Home from "./Home";
@@ -12,60 +12,38 @@ import PeopleTable from "./People/Table";
 import { FaAlignJustify } from "react-icons/fa";
 
 export default function Courses() {
-    const { cid } = useParams<{ cid: string }>();
+    const { cid } = useParams<{ cid?: string }>();
     const { pathname } = useLocation();
 
-    const courses = useSelector(
-        (state: RootState) => state.coursesReducer.all
-    ) as Course[];
+    const courses = db.courses; // Use static course list from db
 
-    const currentUser = useSelector(
-        (state: RootState) => state.accountReducer.currentUser
-    );
+    if (!cid) return <Navigate to="/Kambaz/Dashboard" replace />;
 
-    const enrollments = useSelector(
-        (state: RootState) => state.enrollmentReducer.data
-    ) as { user: string; course: string }[];
-
-    // Guard if cid is undefined
-    if (!cid) {
-        return <Navigate to="/Dashboard" replace />;
-    }
-
-    const enrolledCourseIds = enrollments
-        .filter((e) => e.user === currentUser?._id)
-        .map((e) => e.course);
-
-    // Find the course using _id
     const course = courses.find((c) => c._id === cid);
+    if (!course) return <h2 className="p-3 text-danger">Course not found</h2>;
 
-    if (!course) {
-        return <h2 className="p-3 text-danger">Course not found</h2>;
-    }
-
-    if (!enrolledCourseIds.includes(course._id)) {
-        return <Navigate to="/Dashboard" replace />;
-    }
+    const currentPage = pathname.split("/")[4] || "Home";
 
     return (
         <div id="wd-courses">
-            <h2 className="text-danger">
-                <FaAlignJustify className="me-4 fs-4 mb-1" />
-                {course.name} &gt; {pathname.split("/")[4] || "Home"}
+            <h2 className="text-danger mb-3">
+                <FaAlignJustify className="me-2 fs-4 mb-1" />
+                {course.name} &gt; {currentPage}
             </h2>
             <hr />
 
             <div className="d-flex">
                 <div className="d-none d-md-block bg-white border-end pe-4">
-                    <CourseNavigation />
+                    <CourseNavigation course={course} />
                 </div>
+
                 <div className="flex-fill ps-4">
-                    {/* IMPORTANT: Add nested routes with '*' so child routes render */}
                     <Routes>
                         <Route index element={<Navigate to="Home" replace />} />
                         <Route path="Home" element={<Home />} />
                         <Route path="Modules" element={<Modules />} />
-                        <Route path="Assignments" element={<Assignments />} />
+                        <Route path="Assignments" element={<Assignments isFaculty={false} />} />
+                        <Route path="Assignments/New" element={<AssignmentEditor />} />
                         <Route path="Assignments/:aid" element={<AssignmentEditor />} />
                         <Route path="People" element={<PeopleTable />} />
                         <Route path="Piazza" element={<h2 className="p-3">Piazza</h2>} />
