@@ -25,10 +25,10 @@ import GreenCheckmark from "../Modules/GreenCheckmark";
 import "../../styles.css";
 
 interface AssignmentsProps {
-    isFaculty: boolean;
+    isFaculty?: boolean; // made optional
 }
 
-export default function Assignments({ isFaculty }: AssignmentsProps) {
+export default function Assignments({ isFaculty = false }: AssignmentsProps) {
     const { cid } = useParams<{ cid: string }>();
     const dispatch = useDispatch();
 
