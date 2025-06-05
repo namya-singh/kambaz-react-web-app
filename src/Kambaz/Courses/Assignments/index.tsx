@@ -222,7 +222,7 @@ export default function Assignments() {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Description (HTML)</Form.Label>
+                                <Form.Label>Description</Form.Label>
                                 <FormControl
                                     as="textarea"
                                     rows={3}
