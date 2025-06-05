@@ -13,25 +13,24 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import LessonControlButtons from "./LessonControlButtons";
 import { ListGroup, FormControl } from "react-bootstrap";
 import { BsGripVertical } from "react-icons/bs";
+import { IoEllipsisVertical } from "react-icons/io5";
+import GreenCheckmark from "./GreenCheckmark";
 
 export default function Modules() {
     const { cid } = useParams<{ cid: string }>();
     const [moduleName, setModuleName] = useState("");
     const dispatch = useDispatch();
 
-    // Get modules and user info from Redux
     const { modules } = useSelector((state: any) => state.modulesReducer);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
 
     const isFaculty = currentUser?.role === "FACULTY";
 
-    // Filter modules for this course
     const courseModules = modules.filter((m: any) => m.course === cid);
 
     return (
         <div className="wd-modules d-flex">
             <div className="flex-fill pe-4">
-                {/* Pass isFaculty to show/hide +Module button */}
                 <ModulesControls
                     moduleName={moduleName}
                     setModuleName={setModuleName}
@@ -51,34 +50,35 @@ export default function Modules() {
                             key={mod._id}
                             className="wd-module p-0 mb-5 fs-5 border-gray"
                         >
-                            <div className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
-                                <BsGripVertical className="me-2 fs-3" />
+                            <div
+                                className="wd-title p-3 ps-2 bg-secondary d-flex align-items-center">
+                                <BsGripVertical className="me-2 fs-3"/>
                                 {!mod.editing && mod.name}
                                 {mod.editing && isFaculty && (
                                     <FormControl
                                         className="w-50 d-inline-block"
                                         defaultValue={mod.name}
                                         onChange={(e) =>
-                                            dispatch(updateModule({ ...mod, name: e.target.value }))
+                                            dispatch(updateModule({...mod, name: e.target.value}))
                                         }
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
-                                                dispatch(updateModule({ ...mod, editing: false }));
+                                                dispatch(updateModule({...mod, editing: false}));
                                             }
                                         }}
                                     />
                                 )}
 
-                                {/* Edit/delete buttons only for faculty */}
-                                {isFaculty && (
-                                    <span className="ms-auto">
-                                        <ModuleControlButtons
-                                            moduleId={mod._id}
-                                            deleteModule={(moduleId) => dispatch(deleteModule(moduleId))}
-                                            editModule={(moduleId) => dispatch(editModule(moduleId))}
-                                        />
-                                    </span>
-                                )}
+                                <span className="ms-auto d-flex align-items-center gap-2">
+  <ModuleControlButtons
+      moduleId={mod._id}
+      deleteModule={(moduleId) => dispatch(deleteModule(moduleId))}
+      editModule={(moduleId) => dispatch(editModule(moduleId))}
+      isFaculty={isFaculty}
+  />
+</span>
+
+
                             </div>
 
                             {mod.lessons && (
@@ -91,12 +91,16 @@ export default function Modules() {
                                             <BsGripVertical className="me-2 fs-3" />
                                             {lesson.name}
 
-                                            {/* Lesson controls only for faculty */}
-                                            {isFaculty && (
-                                                <span className="ms-auto">
+                                            <span className="ms-auto">
+                                                {isFaculty ? (
                                                     <LessonControlButtons />
-                                                </span>
-                                            )}
+                                                ) : (
+                                                    <>
+                                                        <GreenCheckmark className="me-3" />
+                                                        <IoEllipsisVertical className="fs-4 text-secondary" />
+                                                    </>
+                                                )}
+                                            </span>
                                         </ListGroup.Item>
                                     ))}
                                 </ListGroup>
