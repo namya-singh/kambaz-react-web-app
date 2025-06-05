@@ -19,18 +19,16 @@ import {
     Form,
 } from "react-bootstrap";
 import { FaSearch, FaPlus, FaRegFileAlt } from "react-icons/fa";
-import { BsGripVertical, BsTrash, BsGear } from "react-icons/bs";
+import { BsGripVertical, BsTrash, BsPencil } from "react-icons/bs";
 import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "../Modules/GreenCheckmark";
 import "../../styles.css";
 
-interface AssignmentsProps {
-    isFaculty?: boolean; // made optional
-}
-
-export default function Assignments({ isFaculty = false }: AssignmentsProps) {
+export default function Assignments() {
     const { cid } = useParams<{ cid: string }>();
     const dispatch = useDispatch();
+    const currentUser = useSelector((state: RootState) => state.accountReducer.currentUser);
+    const isFaculty = currentUser?.role === "FACULTY";
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [newTitle, setNewTitle] = useState("");
@@ -186,7 +184,8 @@ export default function Assignments({ isFaculty = false }: AssignmentsProps) {
                         <div className="d-flex align-items-center">
                             {isFaculty && !a.editing && (
                                 <>
-                                    <BsGear
+                                    {/* New: */}
+                                    <BsPencil
                                         onClick={() => handleEditAssignment(a._id)}
                                         className="text-primary me-3 fs-5"
                                         title="Edit Assignment"
