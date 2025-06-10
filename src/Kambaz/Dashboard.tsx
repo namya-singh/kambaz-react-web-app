@@ -47,6 +47,7 @@ const Dashboard: React.FC = () => {
         image: "/images/react.jpg",
     });
 
+    // Toggle: false = show enrolled courses only, true = show all courses
     const [showAll, setShowAll] = useState(false);
 
     if (!currentUser) {
@@ -106,15 +107,25 @@ const Dashboard: React.FC = () => {
         <div id="wd-dashboard" className="p-3">
             <h1 id="wd-dashboard-title">Dashboard</h1>
 
-            <div className="d-flex justify-content-end mb-2">
+            {/* Navigation Buttons for toggling views */}
+            <div className="d-flex justify-content-end mb-2 gap-2">
                 <Button
-                    variant="primary"
-                    onClick={() => setShowAll((prev) => !prev)}
-                    id="wd-toggle-enrollments"
+                    variant={showAll ? "outline-primary" : "primary"}
+                    onClick={() => setShowAll(false)}
+                    id="wd-show-enrollments"
                 >
-                    {showAll ? "Show Only Enrolled" : "Show All Courses"}
+                    Enrollments
+                </Button>
+
+                <Button
+                    variant={showAll ? "primary" : "outline-primary"}
+                    onClick={() => setShowAll(true)}
+                    id="wd-show-all-courses"
+                >
+                    All Courses
                 </Button>
             </div>
+
             <hr />
 
             {isFaculty && (
@@ -220,8 +231,6 @@ const Dashboard: React.FC = () => {
 
                                         <ButtonGroup className="mt-auto w-100">
                                             {isEnrolled ? (
-                                                // ─────────────── FIXED “Go” Link ───────────────
-                                                // Point to “/Kambaz/Courses/:cid/Home” so that your nested <Route> can match:
                                                 <Link
                                                     to={`/Kambaz/Courses/${c._id}/Home`}
                                                     className="text-decoration-none text-dark btn btn-primary"

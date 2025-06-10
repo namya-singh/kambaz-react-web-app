@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { setCurrentUser } from "./reducer";
+import * as client from "./client";
+
 
 export default function Profile() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,6 +13,11 @@ export default function Profile() {
     const navigate = useNavigate();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { currentUser } = useSelector((state: any) => state.accountReducer);
+    const updateProfile = async () => {
+        const updatedProfile = await client.updateUser(profile);
+        dispatch(setCurrentUser(updatedProfile));
+    };
+
 
     useEffect(() => {
         if (!currentUser) {
@@ -20,7 +27,8 @@ export default function Profile() {
         }
     }, [currentUser, navigate]);
 
-    const signout = () => {
+    const signout = async () => {
+        await client.signout();
         dispatch(setCurrentUser(null));
         navigate("/Kambaz/Account/Signin");
     };
@@ -33,64 +41,80 @@ export default function Profile() {
                         <h1 className="mb-5">Profile</h1>
                         <Form>
                             <div className="d-flex align-items-center mb-4">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>Username</Form.Label>
+                                <Form.Label
+                                    style={{width: "25%", minWidth: 120}}>Username</Form.Label>
                                 <Form.Control
                                     value={profile.username || ""}
-                                    onChange={(e) => setProfile({ ...profile, username: e.target.value })}
-                                    style={{ flex: 1 }}
+                                    onChange={(e) => setProfile({
+                                        ...profile,
+                                        username: e.target.value
+                                    })}
+                                    style={{flex: 1}}
                                 />
                             </div>
                             <div className="d-flex align-items-center mb-4">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>ID</Form.Label>
+                                <Form.Label style={{width: "25%", minWidth: 120}}>ID</Form.Label>
                                 <Form.Control
                                     value={profile._id || ""}
                                     readOnly
-                                    style={{ flex: 1 }}
+                                    style={{flex: 1}}
                                 />
                             </div>
                             <div className="d-flex align-items-center mb-4">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>First Name</Form.Label>
+                                <Form.Label style={{width: "25%", minWidth: 120}}>First
+                                    Name</Form.Label>
                                 <Form.Control
                                     value={profile.firstName || ""}
-                                    onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}
-                                    style={{ flex: 1 }}
+                                    onChange={(e) => setProfile({
+                                        ...profile,
+                                        firstName: e.target.value
+                                    })}
+                                    style={{flex: 1}}
                                 />
                             </div>
 
                             <div className="d-flex align-items-center mb-4">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>Last Name</Form.Label>
+                                <Form.Label style={{width: "25%", minWidth: 120}}>Last
+                                    Name</Form.Label>
                                 <Form.Control
                                     value={profile.lastName || ""}
-                                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })}
-                                    style={{ flex: 1 }}
+                                    onChange={(e) => setProfile({
+                                        ...profile,
+                                        lastName: e.target.value
+                                    })}
+                                    style={{flex: 1}}
                                 />
                             </div>
 
                             <div className="d-flex align-items-center mb-4">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>Date of Birth</Form.Label>
+                                <Form.Label style={{width: "25%", minWidth: 120}}>Date of
+                                    Birth</Form.Label>
                                 <Form.Control
                                     type="date"
                                     value={profile.dob || ""}
-                                    onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
-                                    style={{ flex: 1 }}
+                                    onChange={(e) => setProfile({...profile, dob: e.target.value})}
+                                    style={{flex: 1}}
                                 />
                             </div>
 
                             <div className="d-flex align-items-center mb-4">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>Email</Form.Label>
+                                <Form.Label style={{width: "25%", minWidth: 120}}>Email</Form.Label>
                                 <Form.Control
                                     value={profile.email || ""}
-                                    onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                                    style={{ flex: 1 }}
+                                    onChange={(e) => setProfile({
+                                        ...profile,
+                                        email: e.target.value
+                                    })}
+                                    style={{flex: 1}}
                                 />
                             </div>
 
                             <div className="d-flex align-items-center mb-5">
-                                <Form.Label style={{ width: "25%", minWidth: 120 }}>Role</Form.Label>
+                                <Form.Label style={{width: "25%", minWidth: 120}}>Role</Form.Label>
                                 <Form.Select
                                     value={profile.role || "USER"}
-                                    onChange={(e) => setProfile({ ...profile, role: e.target.value })}
-                                    style={{ flex: 1 }}
+                                    onChange={(e) => setProfile({...profile, role: e.target.value})}
+                                    style={{flex: 1}}
                                 >
                                     <option value="USER">User</option>
                                     <option value="ADMIN">Admin</option>
@@ -99,17 +123,27 @@ export default function Profile() {
                                 </Form.Select>
                             </div>
 
-                            <div className="d-flex justify-content-end">
+                            <div className="d-flex justify-content-end gap-3">
+                                <button
+                                    onClick={updateProfile}
+                                    className="btn btn-primary btn-lg flex-grow-1"
+                                    style={{fontSize: "1.25rem"}} // Bootstrap btn-lg font size, can adjust
+                                >
+                                    Update
+                                </button>
+
                                 <Button
                                     id="wd-signout-btn"
                                     variant="danger"
                                     size="lg"
-                                    className="px-5"
+                                    className="flex-grow-1"
+                                    style={{fontSize: "1.25rem"}}
                                     onClick={signout}
                                 >
                                     Signout
                                 </Button>
                             </div>
+
                         </Form>
                     </div>
                 </Col>
