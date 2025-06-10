@@ -232,7 +232,7 @@ const Dashboard: React.FC = () => {
                                         <ButtonGroup className="mt-auto w-100">
                                             {isEnrolled ? (
                                                 <Link
-                                                    to={`/Kambaz/${c._id}/Home`}
+                                                    to={`/Kambaz/Courses/${c._id}/Home`}
                                                     className="text-decoration-none text-dark btn btn-primary"
                                                 >
                                                     Go
