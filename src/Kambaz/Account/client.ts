@@ -38,11 +38,11 @@ export const createCourse = async (course: any) => {
 
 
 export const unenrollCourse = async (courseId: string) => {
-    const response = await axios.post(`${USERS_API}/courses/${courseId}/unenroll`);
+    const response = await axiosWithCredentials.post(`${USERS_API}/courses/${courseId}/unenroll`);
     return response.data;
 };
 
 export const findCoursesForUser = async (userId: string) => {
-    const { data } = await axios.get(`${USERS_API}/${userId}/courses`);
+    const { data } = await axiosWithCredentials.get(`${USERS_API}/${userId}/courses`);
     return data;
 };

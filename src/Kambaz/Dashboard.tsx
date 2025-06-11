@@ -233,6 +233,7 @@ const Dashboard: React.FC = () => {
                                             {isEnrolled ? (
                                                 <Link
                                                     to={`/Kambaz/Courses/${c._id}/Home`}
+                                                    className="btn btn-primary"
                                                 >
                                                     Go
                                                 </Link>
