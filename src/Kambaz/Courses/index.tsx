@@ -20,12 +20,14 @@ export default function Kambaz() {
     // Fetch courses when currentUser changes
     const fetchCourses = async () => {
         try {
-            const fetchedCourses = await userClient.findMyCourses();
+            if (!currentUser?._id) return setCourses([]);
+            const fetchedCourses = await userClient.findCoursesForUser(currentUser._id);
             setCourses(fetchedCourses);
         } catch (error) {
             console.error("Failed to fetch courses:", error);
         }
     };
+
 
     useEffect(() => {
         if (currentUser) {
