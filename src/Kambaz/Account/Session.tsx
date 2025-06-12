@@ -1,4 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// import * as client from "./client";
+// import { useEffect, useState } from "react";
+// import { setCurrentUser } from "./reducer";
+// import { useDispatch } from "react-redux";
+// export default function Session({ children }: { children: any }) {
+//     const [pending, setPending] = useState(true);
+//     const dispatch = useDispatch();
+//     const fetchProfile = async () => {
+//         try {
+//             const currentUser = await client.profile();
+//             dispatch(setCurrentUser(currentUser));
+//         } catch (err: any) {
+//             console.error(err);
+//         }
+//         setPending(false);
+//     };
+//     useEffect(() => {
+//         fetchProfile();
+//     }, []);
+//     if (!pending) {
+//         return children;
+//     }
+// }
+//
+
+
+// ✅ Session.tsx
 import * as client from "./client";
 import { useEffect, useState } from "react";
 import { setCurrentUser } from "./reducer";
@@ -13,7 +40,7 @@ export default function Session({ children }: { children: any }) {
             const currentUser = await client.profile();
             dispatch(setCurrentUser(currentUser));
         } catch (err: any) {
-            console.warn("Session fetch failed:", err?.response?.data || err.message || err);
+            console.error(err);
         }
         setPending(false);
     };
@@ -22,9 +49,6 @@ export default function Session({ children }: { children: any }) {
         fetchProfile();
     }, []);
 
-    if (pending) {
-        return null; // prevent rendering until session check completes
-    }
-
+    if (pending) return <div>Loading...</div>;
     return children;
 }
