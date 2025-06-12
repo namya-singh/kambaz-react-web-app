@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import * as client from "./client";
 import { useEffect, useState } from "react";
 import { setCurrentUser } from "./reducer";
@@ -23,9 +22,9 @@ export default function Session({ children }: { children: any }) {
         fetchProfile();
     }, []);
 
-    if (!pending) {
-        return children;
+    if (pending) {
+        return null; // prevent rendering until session check completes
     }
 
-    return null; // prevent rendering children until session is resolved
+    return children;
 }
