@@ -168,23 +168,29 @@ const Dashboard: React.FC<DashboardProps> = ({
                                         height={160}
                                     />
                                     <Card.Body className="d-flex flex-column">
-                                        <Card.Title
-                                            className="text-nowrap overflow-hidden d-flex justify-content-between align-items-center">
-                                            <span>{c.name}</span>
+                                        <Card.Title className="text-truncate">{c.name}</Card.Title>
 
-                                            {enrolling && (
-                                                <Button
-                                                    variant={isEnrolled ? "danger" : "success"}
-                                                    size="sm"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        updateEnrollment(c._id, !isEnrolled);
-                                                    }}
-                                                >
-                                                    {isEnrolled ? "Unenroll" : "Enroll"}
-                                                </Button>
-                                            )}
-                                        </Card.Title>
+                                        <Card.Text
+                                            className="flex-grow-1 overflow-hidden"
+                                            style={{ height: 80 }}
+                                        >
+                                            {c.description}
+                                        </Card.Text>
+
+                                        {enrolling && (
+                                            <Button
+                                                className="mb-2"
+                                                variant={isEnrolled ? "danger" : "success"}
+                                                size="sm"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    updateEnrollment(c._id, !isEnrolled);
+                                                }}
+                                            >
+                                                {isEnrolled ? "Unenroll" : "Enroll"}
+                                            </Button>
+                                        )}
+
 
                                         <Card.Text
                                             className="flex-grow-1 overflow-hidden"
