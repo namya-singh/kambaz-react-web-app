@@ -85,7 +85,8 @@ const Dashboard: React.FC<DashboardProps> = ({
     };
 
     return (
-        <div id="wd-dashboard" className="p-3">
+        <div id="wd-dashboard" className="p-3" style={{marginLeft: "120px"}}>
+
             <h1 id="wd-dashboard-title">
                 Dashboard
                 <Button
@@ -96,7 +97,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                     {enrolling ? "My Courses" : "All Courses"}
                 </Button>
             </h1>
-            <hr />
+            <hr/>
 
             {isFaculty && (
                 <>
@@ -127,7 +128,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         className="mb-2"
                         placeholder="Course Name"
                         value={course.name}
-                        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+                        onChange={(e) => setCourse({...course, name: e.target.value})}
                         id="wd-course-name"
                     />
                     <FormControl
@@ -137,18 +138,18 @@ const Dashboard: React.FC<DashboardProps> = ({
                         placeholder="Course Description"
                         value={course.description}
                         onChange={(e) =>
-                            setCourse({ ...course, description: e.target.value })
+                            setCourse({...course, description: e.target.value})
                         }
                         id="wd-course-desc"
                     />
-                    <hr />
+                    <hr/>
                 </>
             )}
 
             <h2 id="wd-dashboard-published">
                 {enrolling ? "All Courses" : "My Courses"} ({displayedCourses.length})
             </h2>
-            <hr />
+            <hr/>
 
             <div id="wd-dashboard-courses">
                 <Row xs={1} md={3} lg={5} className="g-4">
@@ -160,14 +161,15 @@ const Dashboard: React.FC<DashboardProps> = ({
                                 key={c._id}
                                 className="wd-dashboard-course d-flex justify-content-center"
                             >
-                                <Card style={{ width: 300 }}>
+                                <Card style={{width: 300}}>
                                     <Card.Img
                                         src={c.image || "/images/react.jpg"}
                                         variant="top"
                                         height={160}
                                     />
                                     <Card.Body className="d-flex flex-column">
-                                        <Card.Title className="text-nowrap overflow-hidden d-flex justify-content-between align-items-center">
+                                        <Card.Title
+                                            className="text-nowrap overflow-hidden d-flex justify-content-between align-items-center">
                                             <span>{c.name}</span>
 
                                             {enrolling && (
@@ -186,7 +188,7 @@ const Dashboard: React.FC<DashboardProps> = ({
 
                                         <Card.Text
                                             className="flex-grow-1 overflow-hidden"
-                                            style={{ height: 80 }}
+                                            style={{height: 80}}
                                         >
                                             {c.description}
                                         </Card.Text>
@@ -200,7 +202,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                     Go
                                                 </Link>
                                             ) : (
-                                                <Button variant="secondary" disabled style={{ flex: 1 }}>
+                                                <Button variant="secondary" disabled
+                                                        style={{flex: 1}}>
                                                     Go
                                                 </Button>
                                             )}
@@ -238,8 +241,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 };
 
 export default Dashboard;
-
-
 
 
 // import React, { useState } from "react";

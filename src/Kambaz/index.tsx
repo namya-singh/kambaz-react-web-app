@@ -213,10 +213,11 @@
          <Session>
              <div id="wd-kambaz">
                  <KambazNavigation />
-                 <div className="wd-main-content-offset p-3">
+                 <div className="wd-main-content-offset p-3" style={{marginLeft: "200px"}}>
+
                      <Routes>
-                         <Route path="/" element={<Navigate to="Account" replace />} />
-                         <Route path="Account/*" element={<Account />} />
+                         <Route path="/" element={<Navigate to="Account" replace/>}/>
+                         <Route path="Account/*" element={<Account/>}/>
                          <Route
                              path="Dashboard"
                              element={
@@ -254,7 +255,7 @@
                              path="Assignments"
                              element={
                                  <ProtectedRoute>
-                                     <Assignments isFaculty={currentUser?.role === "FACULTY"} />
+                                     <Assignments isFaculty={currentUser?.role === "FACULTY"}/>
                                  </ProtectedRoute>
                              }
                          />
@@ -262,12 +263,12 @@
                              path="Assignments/:aid"
                              element={
                                  <ProtectedRoute>
-                                     <AssignmentEditor />
+                                     <AssignmentEditor/>
                                  </ProtectedRoute>
                              }
                          />
-                         <Route path="Calendar" element={<h1>Calendar</h1>} />
-                         <Route path="Inbox" element={<h1>Inbox</h1>} />
+                         <Route path="Calendar" element={<h1>Calendar</h1>}/>
+                         <Route path="Inbox" element={<h1>Inbox</h1>}/>
                      </Routes>
                  </div>
              </div>
