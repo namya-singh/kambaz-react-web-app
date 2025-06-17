@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState } from "react";
@@ -34,12 +35,11 @@ export default function Signin() {
     return (
         <div id="wd-signin-screen">
             <h1>Sign in</h1>
-            <FormControl
-                defaultValue={credentials.username}
-                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-                className="mb-2"
-                placeholder="username"
-                id="wd-username"
+            <FormControl   defaultValue={credentials.username}
+                           onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+                           className="mb-2"
+                           placeholder="username"
+                           id="wd-username"
             />
             <FormControl
                 defaultValue={credentials.password}
