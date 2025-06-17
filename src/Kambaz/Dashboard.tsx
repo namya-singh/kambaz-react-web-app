@@ -85,7 +85,8 @@ const Dashboard: React.FC<DashboardProps> = ({
     };
 
     return (
-        <div id="wd-dashboard" className="p-3" style={{marginLeft: "120px"}}>
+        <div id="wd-dashboard" className="p-3 container-fluid">
+
 
             <h1 id="wd-dashboard-title">
                 Dashboard
@@ -172,7 +173,7 @@ const Dashboard: React.FC<DashboardProps> = ({
 
                                         <Card.Text
                                             className="flex-grow-1 overflow-hidden mb-2"
-                                            style={{ height: 80 }}
+                                            style={{height: 80}}
                                         >
                                             {c.description}
                                         </Card.Text>
