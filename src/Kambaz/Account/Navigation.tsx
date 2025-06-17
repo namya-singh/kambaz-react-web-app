@@ -99,13 +99,8 @@ export default function AccountNavigation() {
             ))}
 
             {currentUser && currentUser.role === "ADMIN" && (
-                <Link
-                    to="/Kambaz/Account/Users"
-                    className={`list-group-item list-group-item-action w-100 py-3 border-0 bg-white ${active("Users")}`}
-                >
-                    Users
-                </Link>
-            )}
+                <Link to={`/Kambaz/Account/Users`} className={`list-group-item ${active("Users")}`}> Users </Link> )}
+
         </ListGroup>
     );
 }
