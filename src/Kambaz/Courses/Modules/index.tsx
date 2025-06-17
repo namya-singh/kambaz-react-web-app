@@ -31,8 +31,8 @@ export default function Modules() {
     const fetchModulesForCourse = async () => {
         if (!cid) return;
         try {
-            const fetchedModules = await modulesClient.findModulesForCourse(cid);
-            dispatch(setModules(fetchedModules));
+            const modules = await modulesClient.findModulesForCourse(cid);
+            dispatch(setModules(modules));
         } catch (error) {
             console.error("Failed to fetch modules:", error);
         }
