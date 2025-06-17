@@ -1,76 +1,276 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ /* eslint-disable @typescript-eslint/no-explicit-any */
+//
+// import { Routes, Route, Navigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
+//
+// import Session from "./Account/Session";
+// import Account from "./Account";
+// import Dashboard from "./Dashboard";
+// import KambazNavigation from "./Navigation";
+// import Courses from "./Courses";
+// import ProtectedRoute from "./Account/ProtectedRoute";
+//
+// import type { RootState } from "./store";
+//
+// import "./styles.css";
+//
+// // Newly imported components for Assignments
+// import Assignments from "./Courses/Assignments";
+// import AssignmentEditor from "./Courses/Assignments/Editor.tsx";
+//
+// export default function Kambaz() {
+//     const currentUser = useSelector(
+//         (state: RootState) => state.accountReducer.currentUser
+//     );
+//
+//     return (
+//         <Session>
+//             <div id="wd-kambaz">
+//                 <KambazNavigation />
+//                 <div className="wd-main-content-offset p-3">
+//                     <Routes>
+//                         <Route path="/" element={<Navigate to="Account" replace />} />
+//                         <Route path="Account/*" element={<Account />} />
+//                         <Route
+//                             path="Dashboard"
+//                             element={
+//                                 <ProtectedRoute>
+//                                     <Dashboard />
+//                                 </ProtectedRoute>
+//                             }
+//                         />
+//                         <Route
+//                             path="Courses/:cid/*"
+//                             element={
+//                                 <ProtectedRoute>
+//                                     <Courses />
+//                                 </ProtectedRoute>
+//                             }
+//                         />
+//
+//                         <Route
+//                             path="Assignments"
+//                             element={
+//                                 <ProtectedRoute>
+//                                     <Assignments isFaculty={currentUser?.role === "FACULTY"} />
+//
+//                                 </ProtectedRoute>
+//                             }
+//                         />
+//
+//                         <Route
+//                             path="Assignments/:aid"
+//                             element={
+//                                 <ProtectedRoute>
+//                                     <AssignmentEditor />
+//                                 </ProtectedRoute>
+//                             }
+//                         />
+//                         <Route path="Calendar" element={<h1>Calendar</h1>} />
+//                         <Route path="Inbox" element={<h1>Inbox</h1>} />
+//                     </Routes>
+//                 </div>
+//             </div>
+//         </Session>
+//     );
+// }
 
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-import Session from "./Account/Session";
-import Account from "./Account";
-import Dashboard from "./Dashboard";
-import KambazNavigation from "./Navigation";
-import Courses from "./Courses";
-import ProtectedRoute from "./Account/ProtectedRoute";
 
-import type { RootState } from "./store";
 
-import "./styles.css";
 
-// Newly imported components for Assignments
-import Assignments from "./Courses/Assignments";
-import AssignmentEditor from "./Courses/Assignments/Editor.tsx";
+ /* eslint-disable @typescript-eslint/no-explicit-any */
+ import { useEffect, useState } from "react";
+ import { Routes, Route, Navigate } from "react-router-dom";
+ import { useSelector } from "react-redux";
 
-export default function Kambaz() {
-    const currentUser = useSelector(
-        (state: RootState) => state.accountReducer.currentUser
-    );
+ import Session from "./Account/Session";
+ import Account from "./Account";
+ import Dashboard from "./Dashboard";
+ import KambazNavigation from "./Navigation";
+ import Courses from "./Courses";
+ import ProtectedRoute from "./Account/ProtectedRoute";
 
-    return (
-        <Session>
-            <div id="wd-kambaz">
-                <KambazNavigation />
-                <div className="wd-main-content-offset p-3">
-                    <Routes>
-                        <Route path="/" element={<Navigate to="Account" replace />} />
-                        <Route path="Account/*" element={<Account />} />
-                        <Route
-                            path="Dashboard"
-                            element={
-                                <ProtectedRoute>
-                                    <Dashboard />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route
-                            path="Courses/:cid/*"
-                            element={
-                                <ProtectedRoute>
-                                    <Courses />
-                                </ProtectedRoute>
-                            }
-                        />
+ import type { RootState } from "./store";
 
-                        <Route
-                            path="Assignments"
-                            element={
-                                <ProtectedRoute>
-                                    <Assignments isFaculty={currentUser?.role === "FACULTY"} />
+ // Newly imported components for Assignments
+ import Assignments from "./Courses/Assignments";
+ import AssignmentEditor from "./Courses/Assignments/Editor.tsx";
 
-                                </ProtectedRoute>
-                            }
-                        />
+ import * as courseClient from "./Courses/client";
+ import * as userClient from "./Account/client";
 
-                        <Route
-                            path="Assignments/:aid"
-                            element={
-                                <ProtectedRoute>
-                                    <AssignmentEditor />
-                                </ProtectedRoute>
-                            }
-                        />
-                        <Route path="Calendar" element={<h1>Calendar</h1>} />
-                        <Route path="Inbox" element={<h1>Inbox</h1>} />
-                    </Routes>
-                </div>
-            </div>
-        </Session>
-    );
-}
+ export default function Kambaz() {
+     const currentUser = useSelector(
+         (state: RootState) => state.accountReducer.currentUser
+     );
+
+     // Courses state held here and passed down
+     const [courses, setCourses] = useState<any[]>([]);
+
+     // Local state for adding a course
+     const [course, setCourse] = useState<any>({
+         _id: "",
+         name: "",
+         description: "",
+         image: "/images/react.jpg",
+     });
+
+     // New state to toggle showing enrolled courses only or all courses with enrolled flag
+     const [enrolling, setEnrolling] = useState<boolean>(false);
+
+     // Fetch courses user is enrolled in only
+     const findCoursesForUser = async () => {
+         if (!currentUser?._id) return;
+         try {
+             const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
+             setCourses(enrolledCourses);
+         } catch (error) {
+             console.error("Error fetching enrolled courses:", error);
+         }
+     };
+     const updateEnrollment = async (courseId: string, enrolled: boolean) => {
+         if (!currentUser?._id) return;
+
+         if (enrolled) {
+             await userClient.enrollIntoCourse1(currentUser._id, courseId);
+         } else {
+             await userClient.unenrollFromCourse1(currentUser._id, courseId);
+         }
+
+         setCourses(
+             courses.map((course) =>
+                 course._id === courseId ? { ...course, enrolled } : course
+             )
+         );
+     };
+
+
+
+     // Fetch all courses and mark enrolled ones
+     const fetchCourses = async () => {
+         if (!currentUser?._id) return;
+         try {
+             const allCourses = await courseClient.fetchAllCourses();
+             const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
+             const coursesWithEnrolledFlag = allCourses.map((course: any) => {
+                 const isEnrolled = enrolledCourses.some((c: any) => c._id === course._id);
+                 return { ...course, enrolled: isEnrolled };
+             });
+             setCourses(coursesWithEnrolledFlag);
+         } catch (error) {
+             console.error("Error fetching all courses with enroll info:", error);
+         }
+     };
+
+     // Fetch courses when currentUser or enrolling changes
+     useEffect(() => {
+         if (!currentUser) return;
+         if (enrolling) {
+             fetchCourses();
+         } else {
+             findCoursesForUser();
+         }
+     }, [currentUser, enrolling]);
+
+     // Add new course via API and update state
+     const addNewCourse = async () => {
+         if (!course.name.trim()) return;
+         try {
+             const newCourse = await courseClient.createCourse(course);
+             setCourses([...courses, newCourse]);
+             setCourse({ _id: "", name: "", description: "", image: "/images/react.jpg" });
+         } catch (error) {
+             console.error("Error adding new course:", error);
+         }
+     };
+
+     // Delete course function to remove a course by ID
+     const deleteCourse = async (courseId: string) => {
+         try {
+             const status = await courseClient.deleteCourse(courseId);
+             if (status) {
+                 setCourses(courses.filter((c) => c._id !== courseId));
+             } else {
+                 console.error("Failed to delete course");
+             }
+         } catch (error) {
+             console.error("Error deleting course:", error);
+         }
+     };
+
+     // Update course by ID via API and update state
+     const updateCourse = async (updatedCourse: any) => {
+         try {
+             const savedCourse = await courseClient.updateCourse(updatedCourse);
+             setCourses(courses.map((c) => (c._id === savedCourse._id ? savedCourse : c)));
+         } catch (error) {
+             console.error("Error updating course:", error);
+         }
+     };
+
+     return (
+         <Session>
+             <div id="wd-kambaz">
+                 <KambazNavigation />
+                 <div className="wd-main-content-offset p-3">
+                     <Routes>
+                         <Route path="/" element={<Navigate to="Account" replace />} />
+                         <Route path="Account/*" element={<Account />} />
+                         <Route
+                             path="Dashboard"
+                             element={
+                                 <ProtectedRoute>
+                                     <Dashboard
+                                         currentUser={currentUser}
+                                         courses={courses}
+                                         setCourses={setCourses}
+                                         addNewCourse={addNewCourse}
+                                         updateCourse={updateCourse}
+                                         course={course}
+                                         setCourse={setCourse}
+                                         deleteCourse={deleteCourse}
+                                         enrolling={enrolling}
+                                         setEnrolling={setEnrolling}
+                                         updateEnrollment={updateEnrollment}
+                                     />
+                                 </ProtectedRoute>
+                             }
+                         />
+                         <Route
+                             path="Courses/:cid/*"
+                             element={
+                                 <ProtectedRoute>
+                                     <Courses
+                                         courses={courses}
+                                         setCourses={setCourses}
+                                         updateCourse={updateCourse}
+                                         deleteCourse={deleteCourse}
+                                     />
+                                 </ProtectedRoute>
+                             }
+                         />
+                         <Route
+                             path="Assignments"
+                             element={
+                                 <ProtectedRoute>
+                                     <Assignments isFaculty={currentUser?.role === "FACULTY"} />
+                                 </ProtectedRoute>
+                             }
+                         />
+                         <Route
+                             path="Assignments/:aid"
+                             element={
+                                 <ProtectedRoute>
+                                     <AssignmentEditor />
+                                 </ProtectedRoute>
+                             }
+                         />
+                         <Route path="Calendar" element={<h1>Calendar</h1>} />
+                         <Route path="Inbox" element={<h1>Inbox</h1>} />
+                     </Routes>
+                 </div>
+             </div>
+         </Session>
+     );
+ }
