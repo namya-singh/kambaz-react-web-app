@@ -171,7 +171,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                         <Card.Title className="text-truncate">{c.name}</Card.Title>
 
                                         <Card.Text
-                                            className="flex-grow-1 overflow-hidden"
+                                            className="flex-grow-1 overflow-hidden mb-2"
                                             style={{ height: 80 }}
                                         >
                                             {c.description}
@@ -191,13 +191,6 @@ const Dashboard: React.FC<DashboardProps> = ({
                                             </Button>
                                         )}
 
-
-                                        <Card.Text
-                                            className="flex-grow-1 overflow-hidden"
-                                            style={{height: 80}}
-                                        >
-                                            {c.description}
-                                        </Card.Text>
 
                                         <ButtonGroup className="mt-auto w-100">
                                             {isEnrolled ? (
