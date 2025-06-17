@@ -39,6 +39,7 @@ export default function Users() {
 
     const fetchUsers = async () => {
         const users = await client.findAllUsers();
+        console.log("Fetched users:", users);
         setUsers(users);
     };
 
