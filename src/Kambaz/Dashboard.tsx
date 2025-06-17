@@ -86,8 +86,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 
     return (
         <div id="wd-dashboard" className="p-3 container-fluid">
-
-
             <h1 id="wd-dashboard-title">
                 Dashboard
                 <Button
@@ -98,7 +96,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                     {enrolling ? "My Courses" : "All Courses"}
                 </Button>
             </h1>
-            <hr/>
+            <hr />
 
             {isFaculty && (
                 <>
@@ -129,7 +127,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                         className="mb-2"
                         placeholder="Course Name"
                         value={course.name}
-                        onChange={(e) => setCourse({...course, name: e.target.value})}
+                        onChange={(e) => setCourse({ ...course, name: e.target.value })}
                         id="wd-course-name"
                     />
                     <FormControl
@@ -139,18 +137,18 @@ const Dashboard: React.FC<DashboardProps> = ({
                         placeholder="Course Description"
                         value={course.description}
                         onChange={(e) =>
-                            setCourse({...course, description: e.target.value})
+                            setCourse({ ...course, description: e.target.value })
                         }
                         id="wd-course-desc"
                     />
-                    <hr/>
+                    <hr />
                 </>
             )}
 
             <h2 id="wd-dashboard-published">
                 {enrolling ? "All Courses" : "My Courses"} ({displayedCourses.length})
             </h2>
-            <hr/>
+            <hr />
 
             <div id="wd-dashboard-courses">
                 <Row xs={1} md={3} lg={5} className="g-4">
@@ -162,7 +160,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                 key={c._id}
                                 className="wd-dashboard-course d-flex justify-content-center"
                             >
-                                <Card style={{width: 300}}>
+                                <Card style={{ width: 300 }}>
                                     <Card.Img
                                         src={c.image || "/images/react.jpg"}
                                         variant="top"
@@ -173,37 +171,37 @@ const Dashboard: React.FC<DashboardProps> = ({
 
                                         <Card.Text
                                             className="flex-grow-1 overflow-hidden mb-2"
-                                            style={{height: 80}}
+                                            style={{ height: 80 }}
                                         >
                                             {c.description}
                                         </Card.Text>
 
                                         {enrolling && (
-                                            <Button
-                                                className="mb-2"
-                                                variant={isEnrolled ? "danger" : "success"}
-                                                size="sm"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    updateEnrollment(c._id, !isEnrolled);
-                                                }}
-                                            >
-                                                {isEnrolled ? "Unenroll" : "Enroll"}
-                                            </Button>
+                                            <div className="mb-2 d-flex justify-content-center">
+                                                <Button
+                                                    variant={isEnrolled ? "danger" : "success"}
+                                                    size="sm"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        updateEnrollment(c._id, !isEnrolled);
+                                                    }}
+                                                    className="px-4"
+                                                >
+                                                    {isEnrolled ? "Unenroll" : "Enroll"}
+                                                </Button>
+                                            </div>
                                         )}
 
-
-                                        <ButtonGroup className="mt-auto w-100">
+                                        <ButtonGroup className="mt-auto w-100 d-flex justify-content-between gap-2">
                                             {isEnrolled ? (
                                                 <Link
                                                     to={`/Kambaz/Courses/${c._id}/Home`}
-                                                    className="btn btn-primary"
+                                                    className="btn btn-primary flex-fill"
                                                 >
                                                     Go
                                                 </Link>
                                             ) : (
-                                                <Button variant="secondary" disabled
-                                                        style={{flex: 1}}>
+                                                <Button variant="secondary" disabled className="flex-fill">
                                                     Go
                                                 </Button>
                                             )}
@@ -215,6 +213,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                         variant="danger"
                                                         size="sm"
                                                         onClick={() => deleteCourse && deleteCourse(c._id)}
+                                                        className="flex-fill"
                                                     >
                                                         Delete
                                                     </Button>
@@ -223,6 +222,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                         variant="warning"
                                                         size="sm"
                                                         onClick={() => setCourse(c)}
+                                                        className="flex-fill"
                                                     >
                                                         Edit
                                                     </Button>
@@ -241,7 +241,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 };
 
 export default Dashboard;
-
 
 // import React, { useState } from "react";
 // import {
