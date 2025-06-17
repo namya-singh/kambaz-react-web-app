@@ -35,7 +35,7 @@ interface DashboardProps {
     courses: Course[];
     setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
     updateCourse: (course: any) => Promise<void>;
-    addNewCourse: () => Promise<void>;
+    addNewCourse: () => Promise<Course>; // return the created course
     course: Course;
     setCourse: React.Dispatch<React.SetStateAction<Course>>;
     deleteCourse?: (courseId: string) => Promise<void>;
@@ -55,6 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                  deleteCourse,
                                                  updateCourse,
                                                  updateEnrollment,
+                                                 setCourses
                                              }) => {
     const enrollments: Enrollment[] = useSelector(
         (state: RootState) => state.enrollmentReducer.data
@@ -67,7 +68,14 @@ const Dashboard: React.FC<DashboardProps> = ({
     const isFaculty = currentUser.role === "FACULTY";
 
     const addNewCourseHandler = async () => {
-        await addNewCourse();
+        try {
+            const newCourse = await addNewCourse();
+            setCourses((prev) => [...prev, newCourse]);
+            setCourse({ _id: "", name: "", description: "", image: "" });
+            updateEnrollment(newCourse._id, true);
+        } catch (err) {
+            console.error("Failed to add course:", err);
+        }
     };
 
     const myEnrolledCourseIds = new Set(
@@ -241,6 +249,13 @@ const Dashboard: React.FC<DashboardProps> = ({
 };
 
 export default Dashboard;
+
+
+
+
+
+
+
 
 // import React, { useState } from "react";
 // import {
