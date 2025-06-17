@@ -78,7 +78,6 @@
 
 
 
-
  /* eslint-disable @typescript-eslint/no-explicit-any */
  import { useEffect, useState } from "react";
  import { Routes, Route, Navigate } from "react-router-dom";
@@ -129,6 +128,7 @@
              console.error("Error fetching enrolled courses:", error);
          }
      };
+
      const updateEnrollment = async (courseId: string, enrolled: boolean) => {
          if (!currentUser?._id) return;
 
@@ -144,8 +144,6 @@
              )
          );
      };
-
-
 
      // Fetch all courses and mark enrolled ones
      const fetchCourses = async () => {
@@ -174,19 +172,34 @@
      }, [currentUser, enrolling]);
 
      // Add new course via API and update state
-     const addNewCourse = async () => {
-         if (!course.name.trim()) return;
+     // Add New Course — returns Promise<Course | undefined>
+     const addNewCourse = async (): Promise<any | undefined> => {
+         if (!course.name.trim()) return undefined;
          try {
              const newCourse = await courseClient.createCourse(course);
              setCourses([...courses, newCourse]);
              setCourse({ _id: "", name: "", description: "", image: "/images/react.jpg" });
+             return newCourse; // <-- return new course here
          } catch (error) {
              console.error("Error adding new course:", error);
+             return undefined;
          }
      };
 
-     // Delete course function to remove a course by ID
-     const deleteCourse = async (courseId: string) => {
+     // Update Course — returns Promise<Course | undefined>
+     const updateCourse = async (updatedCourse: any): Promise<any | undefined> => {
+         try {
+             const savedCourse = await courseClient.updateCourse(updatedCourse);
+             setCourses(courses.map((c) => (c._id === savedCourse._id ? savedCourse : c)));
+             return savedCourse; // <-- return updated course here
+         } catch (error) {
+             console.error("Error updating course:", error);
+             return undefined;
+         }
+     };
+
+     // Delete Course — returns Promise<void> (corrected to match expected type)
+     const deleteCourse = async (courseId: string): Promise<void> => {
          try {
              const status = await courseClient.deleteCourse(courseId);
              if (status) {
@@ -194,18 +207,9 @@
              } else {
                  console.error("Failed to delete course");
              }
+             // no return
          } catch (error) {
              console.error("Error deleting course:", error);
-         }
-     };
-
-     // Update course by ID via API and update state
-     const updateCourse = async (updatedCourse: any) => {
-         try {
-             const savedCourse = await courseClient.updateCourse(updatedCourse);
-             setCourses(courses.map((c) => (c._id === savedCourse._id ? savedCourse : c)));
-         } catch (error) {
-             console.error("Error updating course:", error);
          }
      };
 
@@ -213,11 +217,10 @@
          <Session>
              <div id="wd-kambaz">
                  <KambazNavigation />
-                 <div className="wd-main-content-offset p-3" style={{marginLeft: "200px"}}>
-
+                 <div className="wd-main-content-offset p-3" style={{ marginLeft: "200px" }}>
                      <Routes>
-                         <Route path="/" element={<Navigate to="Account" replace/>}/>
-                         <Route path="Account/*" element={<Account/>}/>
+                         <Route path="/" element={<Navigate to="Account" replace />} />
+                         <Route path="Account/*" element={<Account />} />
                          <Route
                              path="Dashboard"
                              element={
@@ -255,7 +258,7 @@
                              path="Assignments"
                              element={
                                  <ProtectedRoute>
-                                     <Assignments isFaculty={currentUser?.role === "FACULTY"}/>
+                                     <Assignments isFaculty={currentUser?.role === "FACULTY"} />
                                  </ProtectedRoute>
                              }
                          />
@@ -263,12 +266,12 @@
                              path="Assignments/:aid"
                              element={
                                  <ProtectedRoute>
-                                     <AssignmentEditor/>
+                                     <AssignmentEditor />
                                  </ProtectedRoute>
                              }
                          />
-                         <Route path="Calendar" element={<h1>Calendar</h1>}/>
-                         <Route path="Inbox" element={<h1>Inbox</h1>}/>
+                         <Route path="Calendar" element={<h1>Calendar</h1>} />
+                         <Route path="Inbox" element={<h1>Inbox</h1>} />
                      </Routes>
                  </div>
              </div>
