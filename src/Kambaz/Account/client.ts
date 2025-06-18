@@ -97,7 +97,8 @@ export const enrollIntoCourse = async (userId: string, courseId: string) => {
     const response = await axiosWithCredentials.post(`${USERS_API}/${userId}/courses/${courseId}`);
     return response.data;
 };
-export const createCourseWithEnrollment = async (userId: string) => {
-    const response = await axiosWithCredentials.post("/api/courses", { userId });
+export const createCourseWithEnrollment = async (userId: string, course: any) => {
+    const payload = { ...course, userId };
+    const response = await axiosWithCredentials.post("/api/courses", payload);
     return response.data;
 };

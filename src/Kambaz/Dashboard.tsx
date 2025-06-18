@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store";
 import { enrollIntoCourse } from "./Account/client";
-// remove '.ts' extension here
 import { createCourseWithEnrollment } from "./Account/client";
 
 interface Course {
@@ -77,7 +76,8 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         try {
             // 1. Add new course via prop function
-            const newCourse = await createCourseWithEnrollment(currentUser._id);
+            const newCourse = await createCourseWithEnrollment(currentUser._id, course);
+
 
             console.log("New course returned:", newCourse);
 
