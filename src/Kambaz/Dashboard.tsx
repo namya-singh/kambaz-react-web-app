@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store";
+import {enrollIntoCourse} from "./Account/client.ts";
 
 interface Course {
     _id: string;
@@ -67,16 +68,46 @@ const Dashboard: React.FC<DashboardProps> = ({
 
     const isFaculty = currentUser.role === "FACULTY";
 
-    const addNewCourseHandler = async () => {
+    // const addNewCourseHandler = async () => {
+    //     try {
+    //         const newCourse = await addNewCourse();
+    //         setCourses((prev) => [...prev, newCourse]);
+    //         setCourse({ _id: "", name: "", description: "", image: "" });
+    //         updateEnrollment(newCourse._id, true);
+    //     } catch (err) {
+    //         console.error("Failed to add course:", err);
+    //     }
+    // };
+    const addNewCourseHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault(); // prevent form submit or page reload if inside a form
+
         try {
+            // 1. Add new course via prop function
             const newCourse = await addNewCourse();
+            if (!newCourse || !newCourse._id) {
+                throw new Error("Failed to create course");
+            }
+
+            // 2. Add to local course list state
             setCourses((prev) => [...prev, newCourse]);
+
+            // 3. Reset course form
             setCourse({ _id: "", name: "", description: "", image: "" });
+
+            // 4. Auto-enroll current user to new course on backend
+            // You need an API call here that enrolls user into the course
+            // Assuming you have a function enrollIntoCourse(userId, courseId)
+            if (currentUser && currentUser._id) {
+                await enrollIntoCourse(currentUser._id, newCourse._id);
+            }
+
+            // 5. Update frontend enrollment state after enrolling
             updateEnrollment(newCourse._id, true);
         } catch (err) {
             console.error("Failed to add course:", err);
         }
     };
+
 
     const myEnrolledCourseIds = new Set(
         enrollments
