@@ -6,7 +6,7 @@ import axios from "axios";
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 const axiosWithCredentials = axios.create({
-    baseURL: REMOTE_SERVER,
+    baseURL: 'https://kambaz-node-server-app-bwyf.onrender.com',
     withCredentials: true,
 });
 export const createCourseWithEnrollment = async (userId: string, course: any) => {
