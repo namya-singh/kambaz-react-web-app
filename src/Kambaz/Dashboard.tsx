@@ -72,26 +72,23 @@ const Dashboard: React.FC<DashboardProps> = ({
         e: React.MouseEvent<HTMLButtonElement>
     ) => {
         e.preventDefault();
-        console.log("Add new course clicked");
+
+        // ✅ Confirm handler is firing and check values
+        console.log("🚀 Add button clicked");
+        console.log("Course state:", course);
+        console.log("Current user:", currentUser);
 
         try {
-            // 1. Add new course via prop function
             const newCourse = await createCourseWithEnrollment(currentUser._id, course);
-
-
             console.log("New course returned:", newCourse);
 
             if (!newCourse || !newCourse._id) {
                 throw new Error("Failed to create course");
             }
 
-            // 2. Add to local course list state
             setCourses((prev) => [...prev, newCourse]);
-
-            // 3. Reset course form state
             setCourse({ _id: "", name: "", description: "", image: "" });
 
-            // 4. Auto-enroll current user into new course (backend call)
             if (currentUser && currentUser._id) {
                 console.log(
                     `Enrolling user ${currentUser._id} into course ${newCourse._id}`
@@ -100,12 +97,12 @@ const Dashboard: React.FC<DashboardProps> = ({
                 console.log("Enrolled successfully");
             }
 
-            // 5. Update frontend enrollment state after enrolling
             updateEnrollment(newCourse._id, true);
         } catch (err) {
-            console.error("Failed to add course:", err);
+            console.error("❌ Failed to add course:", err);
         }
     };
+
 
     const myEnrolledCourseIds = new Set(
         enrollments
@@ -142,14 +139,23 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <h5 className="mb-0">New Course</h5>
                         <div>
                             <Button
-                                id="wd-add-new-course-click"
-                                variant="primary"
-                                className="me-2"
-                                onClick={addNewCourseHandler}
-                                disabled={!course.name.trim()}
-                            >
-                                Add
-                            </Button>
+                                                                id="wd-add-new-course-click"
+                                                                variant="primary"
+                                                                className="me-2"
+                                                                onClick={addNewCourseHandler}
+                                                                disabled={!course.name.trim()}
+                                                            >
+                                                                Add
+                                                            </Button>
+                            {/*<Button*/}
+                            {/*    id="wd-add-new-course-click"*/}
+                            {/*    variant="primary"*/}
+                            {/*    className="me-2"*/}
+                            {/*    onClick={addNewCourseHandler}*/}
+                            {/*    disabled={!course.name.trim()}*/}
+                            {/*>*/}
+                            {/*    Add*/}
+                            {/*</Button>*/}
                             <Button
                                 id="wd-update-course-click"
                                 variant="warning"

@@ -8,9 +8,11 @@ const COURSES_API = `${REMOTE_SERVER}/api/courses`;
 
 export const createCourseWithEnrollment = async (userId: string, course: any) => {
     const payload = { ...course, userId };
+    console.log("Payload being sent:", payload); // ✅ Add this for debugging
     const { data } = await axiosWithCredentials.post(`${COURSES_API}`, payload);
     return data;
 };
+
 
 
 export const fetchAllCourses = async () => {
