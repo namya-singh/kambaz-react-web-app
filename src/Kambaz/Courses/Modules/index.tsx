@@ -109,7 +109,7 @@ export default function Modules() {
                                         }
                                         onKeyDown={(e) => {
                                             if (e.key === "Enter") {
-                                                updateModuleHandler({ ...mod, editing: false });
+                                                updateModuleHandler({ ...mod, editing:false  });
                                             }
                                         }}
                                         autoFocus

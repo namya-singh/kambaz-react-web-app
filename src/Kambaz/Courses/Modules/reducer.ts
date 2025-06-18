@@ -1,7 +1,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 
 // Initialize with an empty array — no need to import from db
 const initialState = {
@@ -15,15 +15,20 @@ const modulesSlice = createSlice({
         setModules: (state, { payload: modules }) => {
             state.modules = modules;
         },
+        // addModule: (state, { payload: module }) => {
+        //     const newModule: any = {
+        //         _id: uuidv4(),
+        //         lessons: [],
+        //         name: module.name,
+        //         course: module.course,
+        //     };
+        //     state.modules = [...state.modules, newModule] as any;
+        // },
+
         addModule: (state, { payload: module }) => {
-            const newModule: any = {
-                _id: uuidv4(),
-                lessons: [],
-                name: module.name,
-                course: module.course,
-            };
-            state.modules = [...state.modules, newModule] as any;
+            state.modules = [...state.modules, module] as any;
         },
+
         deleteModule: (state, { payload: moduleId }) => {
             state.modules = state.modules.filter((m: any) => m._id !== moduleId);
         },
