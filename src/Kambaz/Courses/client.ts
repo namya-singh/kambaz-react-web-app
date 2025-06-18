@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios from "axios";
-const axiosWithCredentials = axios.create({ withCredentials: true });
+// const axiosWithCredentials = axios.create({ withCredentials: true });
 
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
-
+const axiosWithCredentials = axios.create({
+    baseURL: REMOTE_SERVER,
+    withCredentials: true,
+});
 export const createCourseWithEnrollment = async (userId: string, course: any) => {
     const payload = { ...course, userId };
     console.log("Payload being sent:", payload); // ✅ Add this for debugging
