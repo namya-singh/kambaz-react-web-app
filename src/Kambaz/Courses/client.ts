@@ -38,7 +38,7 @@ export const createCourse = async (course: any) => {
     return data;
 };
 export const findUsersForCourse = async (courseId: string) => {
-    const response = await axios.get(`${COURSES_API}/${courseId}/users`);
+    const response = await axiosWithCredentials.get(`${COURSES_API}/${courseId}/users`);
     return response.data;
 };
 

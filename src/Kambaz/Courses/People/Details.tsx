@@ -17,13 +17,27 @@ export default function PeopleDetails() {
     const [role, setRole] = useState("");
     const [editing, setEditing] = useState(false);
 
+    // const fetchUser = async () => {
+    //     if (!uid) return;
+    //     const user = await client.findUserById(uid);
+    //     setUser(user);
+    //     setName(`${user.firstName} ${user.lastName}`);
+    //     setEmail(user.email || "");
+    //     setRole(user.role || "");
+    // };
+
     const fetchUser = async () => {
         if (!uid) return;
-        const user = await client.findUserById(uid);
-        setUser(user);
-        setName(`${user.firstName} ${user.lastName}`);
-        setEmail(user.email || "");
-        setRole(user.role || "");
+        try {
+            const user = await client.findUserById(uid);
+            setUser(user);
+            setName(`${user.firstName} ${user.lastName}`);
+            setEmail(user.email || "");
+            setRole(user.role || "");
+        } catch (err: any) {
+            console.error("Failed to fetch user", err);
+            alert("Failed to fetch user: " + err?.response?.data?.message || err.message);
+        }
     };
 
     const deleteUser = async (uid: string) => {
