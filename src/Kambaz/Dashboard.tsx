@@ -11,7 +11,9 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store";
-import { enrollIntoCourse } from "./Account/client"; // remove '.ts' extension here
+import { enrollIntoCourse } from "./Account/client";
+// remove '.ts' extension here
+import { createCourseWithEnrollment } from "./Account/client";
 
 interface Course {
     _id: string;
@@ -48,7 +50,6 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({
                                                  currentUser,
                                                  courses,
-                                                 addNewCourse,
                                                  course,
                                                  setCourse,
                                                  enrolling,
@@ -76,7 +77,8 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         try {
             // 1. Add new course via prop function
-            const newCourse = await addNewCourse();
+            const newCourse = await createCourseWithEnrollment(currentUser._id);
+
             console.log("New course returned:", newCourse);
 
             if (!newCourse || !newCourse._id) {
