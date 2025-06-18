@@ -1,6 +1,5 @@
-// PeopleTable.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Table } from "react-bootstrap";
-import PeopleDetails from "./Details";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 
@@ -9,7 +8,12 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
 
     return (
         <div id="wd-people-table" className="p-3">
-            {uid && <PeopleDetails />}
+            {uid && (
+                <div className="mb-3">
+                    <h5>User Details for: {uid}</h5>
+                    {/* You can replace this with a full <PeopleDetails /> component if needed */}
+                </div>
+            )}
 
             <Table striped bordered hover>
                 <thead>
@@ -23,19 +27,26 @@ export default function PeopleTable({ users = [] }: { users?: any[] }) {
                 </tr>
                 </thead>
                 <tbody>
+                {users.length === 0 && (
+                    <tr>
+                        <td colSpan={6} className="text-center">
+                            No users found.
+                        </td>
+                    </tr>
+                )}
                 {users.map((user) => (
                     <tr key={user._id}>
                         <td>
                             <FaUserCircle className="me-2" />
-                            <Link to={`/Kambaz/Account/Users/${user._id}`} className="text-decoration-none">
+                            <Link to={`/users/${user._id}`}>
                                 {user.firstName} {user.lastName}
                             </Link>
                         </td>
-                        <td>{user.loginId}</td>
-                        <td>{user.section}</td>
-                        <td>{user.role}</td>
-                        <td>{user.lastActivity?.split("T")[0]}</td>
-                        <td>{user.totalActivity}</td>
+                        <td>{user.email ?? user.username}</td>
+                        <td>{user.section ?? "—"}</td>
+                        <td>{user.role ?? "—"}</td>
+                        <td>{user.lastActivity ?? "—"}</td>
+                        <td>{user.totalActivity ?? "—"}</td>
                     </tr>
                 ))}
                 </tbody>
