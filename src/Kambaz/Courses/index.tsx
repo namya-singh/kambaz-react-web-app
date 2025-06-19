@@ -270,7 +270,8 @@ export default function Courses({ courses, currentUser }: CoursesProps) {
     const { pathname } = useLocation();
 
     const course = courses.find((c) => c._id === cid);
-    const isFaculty = currentUser?.role === "FACULTY";
+    const isFaculty = currentUser?.role?.toUpperCase() === "FACULTY";
+
 
     // State for users enrolled in this course
     const [users, setUsers] = useState<any[]>([]);
@@ -291,6 +292,9 @@ export default function Courses({ courses, currentUser }: CoursesProps) {
     if (!course) return <h2 className="p-3 text-danger">Course not found</h2>;
 
     const currentPage = pathname.split("/")[4] || "Home";
+    console.log("currentUser:", currentUser);
+    console.log("currentUser.role:", currentUser?.role);
+    console.log("isFaculty:", isFaculty);
 
     return (
         <div id="wd-courses" className="p-3">
