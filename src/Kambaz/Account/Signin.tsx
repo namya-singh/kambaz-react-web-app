@@ -22,6 +22,7 @@ export default function Signin() {
             alert("Invalid username or password");
             return;
         }
+        await client.debug().then(console.log).catch(console.error);
 
         // Fix: cast the role to expected type
         dispatch(setCurrentUser({
