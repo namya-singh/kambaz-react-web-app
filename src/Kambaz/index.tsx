@@ -250,6 +250,7 @@
                                          setCourses={setCourses}
                                          updateCourse={updateCourse}
                                          deleteCourse={deleteCourse}
+                                         currentUser={currentUser}
                                      />
                                  </ProtectedRoute>
                              }
