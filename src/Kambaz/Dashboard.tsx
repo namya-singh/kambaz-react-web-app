@@ -342,7 +342,7 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store";
-import { enrollIntoCourse, createCourseWithEnrollment } from "./Account/client";
+import {enrollIntoCourse, createCourseWithEnrollment, findAllCourses} from "./Account/client";
 
 interface Course {
     _id: string;
@@ -393,8 +393,23 @@ const Dashboard: React.FC<DashboardProps> = ({
     );
 
     useEffect(() => {
-        if (!currentUser) return;
+        const fetchAllCourses = async () => {
+            try {
+                const allCoursesData = await findAllCourses(); // Fetch all courses
+                setCourses(allCoursesData); // Update the courses state with all courses
+            } catch (error) {
+                console.error("Error fetching all courses:", error);
+            }
+        };
 
+        fetchAllCourses();
+    }, []); // Empty dependency array to run once on mount
+
+    useEffect(() => {
+        if (!currentUser || !courses.length) { // Add check for courses.length
+            console.log("Skipping client-side enrollment update: currentUser is null or no courses available.");
+            return;
+        }
         const myEnrolledCourseIds = new Set(
             enrollments
                 .filter((en) => en.user === currentUser._id)
@@ -406,8 +421,12 @@ const Dashboard: React.FC<DashboardProps> = ({
             enrolled: myEnrolledCourseIds.has(c._id),
         }));
 
-        setCourses(updatedCourses);
-    }, [enrollments, currentUser, setCourses]);
+        // Only update if there's a difference to avoid infinite re-renders
+        if (JSON.stringify(updatedCourses) !== JSON.stringify(courses)) {
+            setCourses(updatedCourses);
+        }
+    }, [enrollments, currentUser, setCourses, courses]); // Add 'courses' to dependency array
+
 
     if (!currentUser) {
         return <h2 className="p-3">Please sign in to see your Dashboard.</h2>;

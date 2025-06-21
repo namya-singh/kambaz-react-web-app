@@ -88,10 +88,7 @@ export const createUser = async (user: any) => {
     const response = await axiosWithCredentials.post(`${USERS_API}`, user);
     return response.data;
 };
-// export const enrollIntoCourse1 = async (userId: string, courseId: string) => {
-//     const response = await axiosWithCredentials.post(`${USERS_API}/${userId}/courses/${courseId}`);
-//     return response.data;
-// };
+
 export const unenrollFromCourse = async (userId: string, courseId: string) => {
     const response = await axiosWithCredentials.delete(`${USERS_API}/${userId}/courses/${courseId}`);
     return response.data;
@@ -103,5 +100,9 @@ export const enrollIntoCourse = async (userId: string, courseId: string) => {
 export const createCourseWithEnrollment = async (userId: string, course: any) => {
     const payload = { ...course, userId };
     const response = await axiosWithCredentials.post("/api/courses", payload);
+    return response.data;
+};
+export const findAllCourses = async () => {
+    const response = await axiosWithCredentials.get(`${REMOTE_SERVER}/api/courses`); // Assuming an API endpoint for all courses
     return response.data;
 };
