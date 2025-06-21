@@ -330,7 +330,7 @@
 
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect } from "react";
+import React, {useCallback, useEffect} from "react";
 import {
     Row,
     Col,
@@ -340,9 +340,7 @@ import {
     ButtonGroup,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import type { RootState } from "./store";
-import {enrollIntoCourse, createCourseWithEnrollment, findAllCourses} from "./Account/client";
+import {enrollIntoCourse, createCourseWithEnrollment,findMyCourses, unenrollFromCourse, findAllCourses} from "./Account/client";
 
 interface Course {
     _id: string;
@@ -357,6 +355,8 @@ interface User {
     role: string;
 }
 
+// @ts-expect-error : this is necessary
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Enrollment {
     user: string;
     course: string;
@@ -388,45 +388,40 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                  setEnrolling,
                                                  updateEnrollment,
                                              }) => {
-    const enrollments: Enrollment[] = useSelector(
-        (state: RootState) => state.enrollmentReducer.data
-    );
 
-    useEffect(() => {
-        const fetchAllCourses = async () => {
-            try {
-                const allCoursesData = await findAllCourses(); // Fetch all courses
-                setCourses(allCoursesData); // Update the courses state with all courses
-            } catch (error) {
-                console.error("Error fetching all courses:", error);
+    const fetchCourses = useCallback(async () => {
+        if (!currentUser) {
+            if (enrolling) {
+                try {
+                    const allCoursesData = await findAllCourses();
+                    setCourses(allCoursesData);
+                } catch (error) {
+                    console.error("Error fetching all courses (no user):", error);
+                    setCourses([]);
+                }
+            } else {
+                setCourses([]);
             }
-        };
-
-        fetchAllCourses();
-    }, []); // Empty dependency array to run once on mount
-
-    useEffect(() => {
-        if (!currentUser || !courses.length) { // Add check for courses.length
-            console.log("Skipping client-side enrollment update: currentUser is null or no courses available.");
             return;
         }
-        const myEnrolledCourseIds = new Set(
-            enrollments
-                .filter((en) => en.user === currentUser._id)
-                .map((en) => en.course)
-        );
 
-        const updatedCourses = courses.map((c) => ({
-            ...c,
-            enrolled: myEnrolledCourseIds.has(c._id),
-        }));
-
-        // Only update if there's a difference to avoid infinite re-renders
-        if (JSON.stringify(updatedCourses) !== JSON.stringify(courses)) {
-            setCourses(updatedCourses);
+        try {
+            if (enrolling) {
+                const allCoursesData = await findAllCourses();
+                setCourses(allCoursesData);
+            } else {
+                const myCoursesData = await findMyCourses();
+                setCourses(myCoursesData.map((c: Course) => ({ ...c, enrolled: true })));
+            }
+        } catch (error) {
+            console.error("Error fetching courses:", error);
+            setCourses([]);
         }
-    }, [enrollments, currentUser, setCourses, courses]); // Add 'courses' to dependency array
+    }, [currentUser, enrolling, setCourses]);
 
+    useEffect(() => {
+        fetchCourses();
+    }, [fetchCourses]);
 
     if (!currentUser) {
         return <h2 className="p-3">Please sign in to see your Dashboard.</h2>;
@@ -442,19 +437,38 @@ const Dashboard: React.FC<DashboardProps> = ({
 
             if (!newCourse || !newCourse._id) throw new Error("Failed to create course");
 
-            setCourses((prev) => [...prev, { ...newCourse, enrolled: true }]);
+            await fetchCourses();
+
             setCourse({ _id: "", name: "", description: "", image: "" });
 
-            await enrollIntoCourse(currentUser._id, newCourse._id);
             updateEnrollment(newCourse._id, true);
         } catch (err) {
             console.error("❌ Failed to add course:", err);
         }
     };
 
-    const displayedCourses = enrolling
-        ? courses
-        : courses.filter((c) => c.enrolled);
+    const handleEnrollmentToggle = async (courseId: string, isCurrentlyEnrolled: boolean) => {
+        if (!currentUser) {
+            console.error("Cannot enroll/unenroll: currentUser is null.");
+            return;
+        }
+
+        try {
+            if (isCurrentlyEnrolled) {
+                await unenrollFromCourse(currentUser._id, courseId);
+            } else {
+                await enrollIntoCourse(currentUser._id, courseId);
+            }
+            updateEnrollment(courseId, !isCurrentlyEnrolled);
+
+            await fetchCourses();
+
+        } catch (error) {
+            console.error("Failed to update enrollment:", error);
+        }
+    };
+
+    const displayedCourses = courses;
 
     const onToggleEnrolling = () => {
         setEnrolling(!enrolling);
@@ -525,7 +539,7 @@ const Dashboard: React.FC<DashboardProps> = ({
             <div id="wd-dashboard-courses">
                 <Row xs={1} md={3} lg={5} className="g-4">
                     {displayedCourses.map((c) => {
-                        const isEnrolled = c.enrolled;
+                        const isEnrolled = c.enrolled || false;
 
                         return (
                             <Col key={c._id} className="wd-dashboard-course d-flex justify-content-center">
@@ -548,15 +562,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                     size="sm"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        const newEnrolled = !isEnrolled;
-
-                                                        updateEnrollment(c._id, newEnrolled);
-
-                                                        setCourses(prev =>
-                                                            prev.map(course =>
-                                                                course._id === c._id ? { ...course, enrolled: newEnrolled } : course
-                                                            )
-                                                        );
+                                                        handleEnrollmentToggle(c._id, isEnrolled);
                                                     }}
                                                     className="px-4"
                                                 >
@@ -617,6 +623,3 @@ const Dashboard: React.FC<DashboardProps> = ({
 };
 
 export default Dashboard;
-
-
-
