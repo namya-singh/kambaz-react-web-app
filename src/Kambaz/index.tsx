@@ -133,9 +133,9 @@
          if (!currentUser?._id) return;
 
          if (enrolled) {
-             await userClient.enrollIntoCourse1(currentUser._id, courseId);
+             await userClient.enrollIntoCourse(currentUser._id, courseId);
          } else {
-             await userClient.unenrollFromCourse1(currentUser._id, courseId);
+             await userClient.unenrollFromCourse(currentUser._id, courseId);
          }
 
          setCourses(
