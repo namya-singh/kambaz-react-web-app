@@ -1,5 +1,336 @@
+//  /* eslint-disable @typescript-eslint/no-explicit-any */
+// import React from "react";
+// import {
+//     Row,
+//     Col,
+//     Card,
+//     Button,
+//     FormControl,
+//     ButtonGroup,
+// } from "react-bootstrap";
+// import { Link } from "react-router-dom";
+// import { useSelector } from "react-redux";
+// import type { RootState } from "./store";
+// import { enrollIntoCourse } from "./Account/client";
+// import { createCourseWithEnrollment } from "./Account/client";
+//
+// interface Course {
+//     _id: string;
+//     name: string;
+//     description: string;
+//     image: string;
+//     enrolled?: boolean;
+// }
+//
+// interface User {
+//     _id: string;
+//     role: string;
+// }
+//
+// interface Enrollment {
+//     user: string;
+//     course: string;
+// }
+//
+// interface DashboardProps {
+//     currentUser: User | null;
+//     courses: Course[];
+//     setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
+//     updateCourse: (course: any) => Promise<void>;
+//     addNewCourse: () => Promise<Course>; // return the created course
+//     course: Course;
+//     setCourse: React.Dispatch<React.SetStateAction<Course>>;
+//     deleteCourse?: (courseId: string) => Promise<void>;
+//     enrolling: boolean;
+//     setEnrolling: React.Dispatch<React.SetStateAction<boolean>>;
+//     updateEnrollment: (courseId: string, enrolled: boolean) => void;
+// }
+//
+// const Dashboard: React.FC<DashboardProps> = ({
+//                                                  currentUser,
+//                                                  courses,
+//                                                  course,
+//                                                  setCourse,
+//                                                  enrolling,
+//                                                  setEnrolling,
+//                                                  deleteCourse,
+//                                                  updateCourse,
+//                                                  updateEnrollment,
+//                                                  setCourses,
+//                                              }) => {
+//     const enrollments: Enrollment[] = useSelector(
+//         (state: RootState) => state.enrollmentReducer.data
+//     );
+//
+//     if (!currentUser) {
+//         return <h2 className="p-3">Please sign in to see your Dashboard.</h2>;
+//     }
+//
+//     const isFaculty = currentUser.role === "FACULTY";
+//
+//     // const addNewCourseHandler = async (
+//     //     e: React.MouseEvent<HTMLButtonElement>
+//     // ) => {
+//     //     e.preventDefault();
+//     //
+//     //     // ✅ Confirm handler is firing and check values
+//     //     console.log("🚀 Add button clicked");
+//     //     console.log("Course state:", course);
+//     //     console.log("Current user:", currentUser);
+//     //
+//     //     try {
+//     //         const newCourse = await createCourseWithEnrollment(currentUser._id, course);
+//     //         console.log("New course returned:", newCourse);
+//     //
+//     //         if (!newCourse || !newCourse._id) {
+//     //             throw new Error("Failed to create course");
+//     //         }
+//     //
+//     //         setCourses((prev) => [...prev, newCourse]);
+//     //         setCourse({ _id: "", name: "", description: "", image: "" });
+//     //
+//     //         if (currentUser && currentUser._id) {
+//     //             console.log(
+//     //                 `Enrolling user ${currentUser._id} into course ${newCourse._id}`
+//     //             );
+//     //             await enrollIntoCourse(currentUser._id, newCourse._id);
+//     //             console.log("Enrolled successfully");
+//     //         }
+//     //
+//     //         updateEnrollment(newCourse._id, true);
+//     //     } catch (err) {
+//     //         console.error("❌ Failed to add course:", err);
+//     //     }
+//     // };
+//
+//     const addNewCourseHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+//         e.preventDefault();
+//
+//         try {
+//             const newCourse = await createCourseWithEnrollment(currentUser._id, course);
+//
+//             if (!newCourse || !newCourse._id) throw new Error("Failed to create course");
+//
+//             setCourses((prev) => [...prev, newCourse]);
+//             setCourse({ _id: "", name: "", description: "", image: "" });
+//
+//             if (currentUser && currentUser._id) {
+//                 await enrollIntoCourse(currentUser._id, newCourse._id);
+//
+//                 // Update enrollments in redux:
+//                 updateEnrollment(newCourse._id, true);
+//
+//                 // Or if updateEnrollment doesn't add, do this instead:
+//                 // dispatch(addEnrollment({ user: currentUser._id, course: newCourse._id }));
+//
+//                 // Or refetch enrollments after:
+//                 // const updatedEnrollments = await fetchEnrollments(currentUser._id);
+//                 // dispatch(setEnrollments(updatedEnrollments));
+//             }
+//         } catch (err) {
+//             console.error("❌ Failed to add course:", err);
+//         }
+//     };
+//
+//
+//
+//     const myEnrolledCourseIds = new Set(
+//         enrollments
+//             .filter((en: Enrollment) => en.user === currentUser._id)
+//             .map((en) => en.course)
+//     );
+//
+//     // Filter courses shown depending on enroll toggle
+//     const displayedCourses = enrolling
+//         ? courses
+//         : courses.filter((c) => myEnrolledCourseIds.has(c._id));
+//
+//     const onToggleEnrolling = () => {
+//         setEnrolling(!enrolling);
+//     };
+//
+//     return (
+//         <div id="wd-dashboard" className="p-3 container-fluid">
+//             <h1 id="wd-dashboard-title">
+//                 Dashboard
+//                 <Button
+//                     className="float-end"
+//                     variant="primary"
+//                     onClick={onToggleEnrolling}
+//                 >
+//                     {enrolling ? "My Courses" : "All Courses"}
+//                 </Button>
+//             </h1>
+//             <hr />
+//
+//             {isFaculty && (
+//                 <>
+//                     <div className="d-flex justify-content-between align-items-center mb-2">
+//                         <h5 className="mb-0">New Course</h5>
+//                         <div>
+//                             <Button
+//                                                                 id="wd-add-new-course-click"
+//                                                                 variant="primary"
+//                                                                 className="me-2"
+//                                                                 onClick={addNewCourseHandler}
+//                                                                 disabled={!course.name.trim()}
+//                                                             >
+//                                                                 Add
+//                                                             </Button>
+//                             {/*<Button*/}
+//                             {/*    id="wd-add-new-course-click"*/}
+//                             {/*    variant="primary"*/}
+//                             {/*    className="me-2"*/}
+//                             {/*    onClick={addNewCourseHandler}*/}
+//                             {/*    disabled={!course.name.trim()}*/}
+//                             {/*>*/}
+//                             {/*    Add*/}
+//                             {/*</Button>*/}
+//                             <Button
+//                                 id="wd-update-course-click"
+//                                 variant="warning"
+//                                 onClick={() => updateCourse(course)}
+//                                 disabled={!course._id}
+//                             >
+//                                 Update
+//                             </Button>
+//                         </div>
+//                     </div>
+//
+//                     <FormControl
+//                         className="mb-2"
+//                         placeholder="Course Name"
+//                         value={course.name}
+//                         onChange={(e) => setCourse({ ...course, name: e.target.value })}
+//                         id="wd-course-name"
+//                     />
+//                     <FormControl
+//                         as="textarea"
+//                         rows={3}
+//                         className="mb-4"
+//                         placeholder="Course Description"
+//                         value={course.description}
+//                         onChange={(e) =>
+//                             setCourse({ ...course, description: e.target.value })
+//                         }
+//                         id="wd-course-desc"
+//                     />
+//                     <hr />
+//                 </>
+//             )}
+//
+//             <h2 id="wd-dashboard-published">
+//                 {enrolling ? "All Courses" : "My Courses"} ({displayedCourses.length})
+//             </h2>
+//             <hr />
+//
+//             <div id="wd-dashboard-courses">
+//                 <Row xs={1} md={3} lg={5} className="g-4">
+//                     {displayedCourses.map((c) => {
+//                         // If showing all courses, check if enrolled via enrolled flag
+//                         // If showing my courses, all are enrolled by definition
+//                         const isEnrolled = enrolling ? !!c.enrolled : true;
+//
+//                         return (
+//                             <Col
+//                                 key={c._id}
+//                                 className="wd-dashboard-course d-flex justify-content-center"
+//                             >
+//                                 <Card style={{ width: 300 }}>
+//                                     <Card.Img
+//                                         src={c.image || "/images/react.jpg"}
+//                                         variant="top"
+//                                         height={160}
+//                                     />
+//                                     <Card.Body className="d-flex flex-column">
+//                                         <Card.Title className="text-truncate">
+//                                             {c.name}
+//                                         </Card.Title>
+//
+//                                         <Card.Text
+//                                             className="flex-grow-1 overflow-hidden mb-2"
+//                                             style={{ height: 80 }}
+//                                         >
+//                                             {c.description}
+//                                         </Card.Text>
+//
+//                                         {enrolling && (
+//                                             <div className="mb-2 d-flex justify-content-center">
+//                                                 <Button
+//                                                     variant={isEnrolled ? "danger" : "success"}
+//                                                     size="sm"
+//                                                     onClick={(e) => {
+//                                                         e.preventDefault();
+//                                                         updateEnrollment(c._id, !isEnrolled);
+//                                                     }}
+//                                                     className="px-4"
+//                                                 >
+//                                                     {isEnrolled ? "Unenroll" : "Enroll"}
+//                                                 </Button>
+//                                             </div>
+//                                         )}
+//
+//                                         <ButtonGroup className="mt-auto w-100 d-flex justify-content-between gap-2">
+//                                             {isEnrolled ? (
+//                                                 <Link
+//                                                     to={`/Kambaz/Courses/${c._id}/Home`}
+//                                                     className="btn btn-primary flex-fill"
+//                                                 >
+//                                                     Go
+//                                                 </Link>
+//                                             ) : (
+//                                                 <Button
+//                                                     variant="secondary"
+//                                                     disabled
+//                                                     className="flex-fill"
+//                                                 >
+//                                                     Go
+//                                                 </Button>
+//                                             )}
+//
+//                                             {isFaculty && isEnrolled && (
+//                                                 <>
+//                                                     <Button
+//                                                         id="wd-delete-course-click"
+//                                                         variant="danger"
+//                                                         size="sm"
+//                                                         onClick={() =>
+//                                                             deleteCourse && deleteCourse(c._id)
+//                                                         }
+//                                                         className="flex-fill"
+//                                                     >
+//                                                         Delete
+//                                                     </Button>
+//                                                     <Button
+//                                                         id="wd-edit-course-click"
+//                                                         variant="warning"
+//                                                         size="sm"
+//                                                         onClick={() => setCourse(c)}
+//                                                         className="flex-fill"
+//                                                     >
+//                                                         Edit
+//                                                     </Button>
+//                                                 </>
+//                                             )}
+//                                         </ButtonGroup>
+//                                     </Card.Body>
+//                                 </Card>
+//                             </Col>
+//                         );
+//                     })}
+//                 </Row>
+//             </div>
+//         </div>
+//     );
+// };
+//
+// export default Dashboard;
+
+
+
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Row,
     Col,
@@ -11,8 +342,7 @@ import {
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store";
-import { enrollIntoCourse } from "./Account/client";
-import { createCourseWithEnrollment } from "./Account/client";
+import { enrollIntoCourse, createCourseWithEnrollment } from "./Account/client";
 
 interface Course {
     _id: string;
@@ -37,7 +367,7 @@ interface DashboardProps {
     courses: Course[];
     setCourses: React.Dispatch<React.SetStateAction<Course[]>>;
     updateCourse: (course: any) => Promise<void>;
-    addNewCourse: () => Promise<Course>; // return the created course
+    addNewCourse: () => Promise<Course>;
     course: Course;
     setCourse: React.Dispatch<React.SetStateAction<Course>>;
     deleteCourse?: (courseId: string) => Promise<void>;
@@ -49,59 +379,41 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({
                                                  currentUser,
                                                  courses,
+                                                 setCourses,
+                                                 updateCourse,
                                                  course,
                                                  setCourse,
+                                                 deleteCourse,
                                                  enrolling,
                                                  setEnrolling,
-                                                 deleteCourse,
-                                                 updateCourse,
                                                  updateEnrollment,
-                                                 setCourses,
                                              }) => {
     const enrollments: Enrollment[] = useSelector(
         (state: RootState) => state.enrollmentReducer.data
     );
+
+    useEffect(() => {
+        if (!currentUser) return;
+
+        const myEnrolledCourseIds = new Set(
+            enrollments
+                .filter((en) => en.user === currentUser._id)
+                .map((en) => en.course)
+        );
+
+        const updatedCourses = courses.map((c) => ({
+            ...c,
+            enrolled: myEnrolledCourseIds.has(c._id),
+        }));
+
+        setCourses(updatedCourses);
+    }, [enrollments, currentUser, setCourses]);
 
     if (!currentUser) {
         return <h2 className="p-3">Please sign in to see your Dashboard.</h2>;
     }
 
     const isFaculty = currentUser.role === "FACULTY";
-
-    // const addNewCourseHandler = async (
-    //     e: React.MouseEvent<HTMLButtonElement>
-    // ) => {
-    //     e.preventDefault();
-    //
-    //     // ✅ Confirm handler is firing and check values
-    //     console.log("🚀 Add button clicked");
-    //     console.log("Course state:", course);
-    //     console.log("Current user:", currentUser);
-    //
-    //     try {
-    //         const newCourse = await createCourseWithEnrollment(currentUser._id, course);
-    //         console.log("New course returned:", newCourse);
-    //
-    //         if (!newCourse || !newCourse._id) {
-    //             throw new Error("Failed to create course");
-    //         }
-    //
-    //         setCourses((prev) => [...prev, newCourse]);
-    //         setCourse({ _id: "", name: "", description: "", image: "" });
-    //
-    //         if (currentUser && currentUser._id) {
-    //             console.log(
-    //                 `Enrolling user ${currentUser._id} into course ${newCourse._id}`
-    //             );
-    //             await enrollIntoCourse(currentUser._id, newCourse._id);
-    //             console.log("Enrolled successfully");
-    //         }
-    //
-    //         updateEnrollment(newCourse._id, true);
-    //     } catch (err) {
-    //         console.error("❌ Failed to add course:", err);
-    //     }
-    // };
 
     const addNewCourseHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -111,39 +423,19 @@ const Dashboard: React.FC<DashboardProps> = ({
 
             if (!newCourse || !newCourse._id) throw new Error("Failed to create course");
 
-            setCourses((prev) => [...prev, newCourse]);
+            setCourses((prev) => [...prev, { ...newCourse, enrolled: true }]);
             setCourse({ _id: "", name: "", description: "", image: "" });
 
-            if (currentUser && currentUser._id) {
-                await enrollIntoCourse(currentUser._id, newCourse._id);
-
-                // Update enrollments in redux:
-                updateEnrollment(newCourse._id, true);
-
-                // Or if updateEnrollment doesn't add, do this instead:
-                // dispatch(addEnrollment({ user: currentUser._id, course: newCourse._id }));
-
-                // Or refetch enrollments after:
-                // const updatedEnrollments = await fetchEnrollments(currentUser._id);
-                // dispatch(setEnrollments(updatedEnrollments));
-            }
+            await enrollIntoCourse(currentUser._id, newCourse._id);
+            updateEnrollment(newCourse._id, true);
         } catch (err) {
             console.error("❌ Failed to add course:", err);
         }
     };
 
-
-
-    const myEnrolledCourseIds = new Set(
-        enrollments
-            .filter((en: Enrollment) => en.user === currentUser._id)
-            .map((en) => en.course)
-    );
-
-    // Filter courses shown depending on enroll toggle
     const displayedCourses = enrolling
         ? courses
-        : courses.filter((c) => myEnrolledCourseIds.has(c._id));
+        : courses.filter((c) => c.enrolled);
 
     const onToggleEnrolling = () => {
         setEnrolling(!enrolling);
@@ -153,11 +445,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         <div id="wd-dashboard" className="p-3 container-fluid">
             <h1 id="wd-dashboard-title">
                 Dashboard
-                <Button
-                    className="float-end"
-                    variant="primary"
-                    onClick={onToggleEnrolling}
-                >
+                <Button className="float-end" variant="primary" onClick={onToggleEnrolling}>
                     {enrolling ? "My Courses" : "All Courses"}
                 </Button>
             </h1>
@@ -169,23 +457,14 @@ const Dashboard: React.FC<DashboardProps> = ({
                         <h5 className="mb-0">New Course</h5>
                         <div>
                             <Button
-                                                                id="wd-add-new-course-click"
-                                                                variant="primary"
-                                                                className="me-2"
-                                                                onClick={addNewCourseHandler}
-                                                                disabled={!course.name.trim()}
-                                                            >
-                                                                Add
-                                                            </Button>
-                            {/*<Button*/}
-                            {/*    id="wd-add-new-course-click"*/}
-                            {/*    variant="primary"*/}
-                            {/*    className="me-2"*/}
-                            {/*    onClick={addNewCourseHandler}*/}
-                            {/*    disabled={!course.name.trim()}*/}
-                            {/*>*/}
-                            {/*    Add*/}
-                            {/*</Button>*/}
+                                id="wd-add-new-course-click"
+                                variant="primary"
+                                className="me-2"
+                                onClick={addNewCourseHandler}
+                                disabled={!course.name.trim()}
+                            >
+                                Add
+                            </Button>
                             <Button
                                 id="wd-update-course-click"
                                 variant="warning"
@@ -227,15 +506,10 @@ const Dashboard: React.FC<DashboardProps> = ({
             <div id="wd-dashboard-courses">
                 <Row xs={1} md={3} lg={5} className="g-4">
                     {displayedCourses.map((c) => {
-                        // If showing all courses, check if enrolled via enrolled flag
-                        // If showing my courses, all are enrolled by definition
-                        const isEnrolled = enrolling ? !!c.enrolled : true;
+                        const isEnrolled = c.enrolled;
 
                         return (
-                            <Col
-                                key={c._id}
-                                className="wd-dashboard-course d-flex justify-content-center"
-                            >
+                            <Col key={c._id} className="wd-dashboard-course d-flex justify-content-center">
                                 <Card style={{ width: 300 }}>
                                     <Card.Img
                                         src={c.image || "/images/react.jpg"}
@@ -243,14 +517,8 @@ const Dashboard: React.FC<DashboardProps> = ({
                                         height={160}
                                     />
                                     <Card.Body className="d-flex flex-column">
-                                        <Card.Title className="text-truncate">
-                                            {c.name}
-                                        </Card.Title>
-
-                                        <Card.Text
-                                            className="flex-grow-1 overflow-hidden mb-2"
-                                            style={{ height: 80 }}
-                                        >
+                                        <Card.Title className="text-truncate">{c.name}</Card.Title>
+                                        <Card.Text className="flex-grow-1 overflow-hidden mb-2" style={{ height: 80 }}>
                                             {c.description}
                                         </Card.Text>
 
@@ -279,11 +547,7 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                     Go
                                                 </Link>
                                             ) : (
-                                                <Button
-                                                    variant="secondary"
-                                                    disabled
-                                                    className="flex-fill"
-                                                >
+                                                <Button variant="secondary" disabled className="flex-fill">
                                                     Go
                                                 </Button>
                                             )}
@@ -325,9 +589,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 };
 
 export default Dashboard;
-
-
-
 
 
 
