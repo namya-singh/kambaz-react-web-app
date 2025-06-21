@@ -529,12 +529,21 @@ const Dashboard: React.FC<DashboardProps> = ({
                                                     size="sm"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        updateEnrollment(c._id, !isEnrolled);
+                                                        const newEnrolled = !isEnrolled;
+
+                                                        updateEnrollment(c._id, newEnrolled);
+
+                                                        setCourses(prev =>
+                                                            prev.map(course =>
+                                                                course._id === c._id ? { ...course, enrolled: newEnrolled } : course
+                                                            )
+                                                        );
                                                     }}
                                                     className="px-4"
                                                 >
                                                     {isEnrolled ? "Unenroll" : "Enroll"}
                                                 </Button>
+
                                             </div>
                                         )}
 
